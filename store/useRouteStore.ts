@@ -10,17 +10,28 @@ export interface Waypoint {
 interface RouteState {
   waypoints: Waypoint[];
   snappedPath: [number, number][];
+  startDate: string;
+  startTime: string;
+  paceMinutes: number;
+  paceSeconds: number;
+  useNoise: boolean;
   addWaypoint: (lat: number, lng: number) => void;
   removeWaypoint: (id: string) => void;
   reorderWaypoints: (oldIndex: number, newIndex: number) => void;
   moveWaypoint: (id: string, lat: number, lng: number) => void;
   fetchSnappedPath: () => Promise<void>;
+  setConfig: (config: Partial<RouteState>) => void;
 }
 
 export const useRouteStore = create<RouteState>((set) => ({
   waypoints: [],
   snappedPath: [],
-  
+  startDate: new Date().toISOString().split('T')[0],
+  startTime: "08:00",
+  paceMinutes: 5,
+  paceSeconds: 30,
+  useNoise: false,
+
   addWaypoint: (lat: number, lng: number) => {
     const id = Date.now().toString() + Math.random().toString(36).substring(2, 9);
     get().fetchSnappedPath();
@@ -53,6 +64,10 @@ export const useRouteStore = create<RouteState>((set) => ({
       ),
     }));
     get().fetchSnappedPath();
+  },
+
+  setConfig: (config: Partial<RouteState>) => {
+    set(config);
   },
 
   fetchSnappedPath: async () => {
