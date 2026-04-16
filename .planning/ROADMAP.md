@@ -25,7 +25,7 @@ StravaFakeRun will be built in four main phases. First, we'll bootstrap the Next
 
 Plans:
 - [x] 01-01: Bootstrap Next.js with Tailwind CSS
-- [ ] 01-02: Implement Leaflet map wrapper
+- [x] 01-02: Implement Leaflet map wrapper
 - [ ] 01-03: Create waypoint plotting and polyline rendering logic
 
 ### Phase 2: UI Controls & Road Snapping
