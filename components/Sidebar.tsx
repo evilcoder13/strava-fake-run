@@ -73,7 +73,7 @@ function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; ind
 }
 
 export default function Sidebar() {
-  const { waypoints, reorderWaypoints } = useRouteStore();
+  const { waypoints, reorderWaypoints, setConfig, startDate, startTime, paceMinutes, paceSeconds, useNoise } = useRouteStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -98,7 +98,62 @@ export default function Sidebar() {
         <h1 className="text-xl font-bold text-gray-900">StravaFakeRun</h1>
         <p className="text-sm text-gray-500 mt-1">Plot your synthetic route</p>
       </div>
-      
+
+      <div className="p-4 bg-gray-50 border-b border-gray-200">
+        <h2 className="text-sm font-semibold text-gray-900 mb-3">Run Settings</h2>
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setConfig({ startDate: e.target.value })}
+              className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">Start Time</label>
+            <input
+              type="time"
+              value={startTime}
+              onChange={(e) => setConfig({ startTime: e.target.value })}
+              className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">Target Pace (min/km)</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="0"
+                max="99"
+                value={paceMinutes}
+                onChange={(e) => setConfig({ paceMinutes: parseInt(e.target.value) || 0 })}
+                className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
+              />
+              <span className="text-sm text-gray-600">:</span>
+              <input
+                type="number"
+                min="0"
+                max="59"
+                value={paceSeconds}
+                onChange={(e) => setConfig({ paceSeconds: parseInt(e.target.value) || 0 })}
+                className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm text-gray-700">Enable Pacing Noise</label>
+            <input
+              type="checkbox"
+              checked={useNoise}
+              onChange={(e) => setConfig({ useNoise: e.target.checked })}
+              className="accent-[#FC4C02]"
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="flex-1 overflow-y-auto p-4">
         {waypoints.length === 0 ? (
           <div className="text-center mt-12 p-6">
