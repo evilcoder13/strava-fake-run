@@ -7,7 +7,7 @@ StravaFakeRun will be built in four main phases. First, we'll bootstrap the Next
 ## Phases
 
 - [ ] **Phase 1: Project Setup & Core Map** - Bootstrap Next.js, Tailwind, and React Leaflet for interactive waypoint plotting.
-- [ ] **Phase 2: UI Controls & Road Snapping** - Add settings panel for dates/pace and snap map routes to real roads.
+- [x] **Phase 2: UI Controls & Road Snapping** - Add settings panel for dates/pace and snap map routes to real roads. (completed 2026-04-16)
 - [ ] **Phase 3: Route Interpolator Brain** - Segment path geometry by pace and simulate cadence and heart rate.
 - [ ] **Phase 4: Export Engine** - Translate the generated data layer objects into downloadable GPX and TCX files.
 
@@ -38,8 +38,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Integrate snap-to-road API (e.g. OSRM point-to-point)
-- [ ] 02-02: Build Configuration sidebar UI (Date, Time, Pace form elements)
+- [x] 02-01: Integrate snap-to-road API (e.g. OSRM point-to-point)
+- [x] 02-02: Build Configuration sidebar UI (Date, Time, Pace form elements)
 
 ### Phase 3: Route Interpolator Brain
 **Goal**: Convert routing lines into a time-and-biometric-stamped sequence.
@@ -76,6 +76,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Project Setup & Core Map | 0/3 | Not started | - |
-| 2. UI Controls & Road Snapping | 0/2 | Not started | - |
+| 2. UI Controls & Road Snapping | 2/2 | Complete    | 2026-04-16 |
 | 3. Route Interpolator Brain | 0/2 | Not started | - |
 | 4. Export Engine | 0/2 | Not started | - |
