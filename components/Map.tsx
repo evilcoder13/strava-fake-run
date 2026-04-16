@@ -29,6 +29,7 @@ function MapEvents() {
 
 export default function Map() {
   const waypoints = useRouteStore((state) => state.waypoints);
+  const snappedPath = useRouteStore((state) => state.snappedPath);
   const moveWaypoint = useRouteStore((state) => state.moveWaypoint);
   const [mounted, setMounted] = useState(false);
   const [customIcon, setCustomIcon] = useState<L.DivIcon | null>(null);
@@ -68,9 +69,9 @@ export default function Map() {
         />
       ))}
       
-      {waypoints.length > 1 && (
+      {snappedPath.length > 0 && (
         <Polyline
-          positions={waypoints.map((wp) => [wp.lat, wp.lng])}
+          positions={snappedPath}
           color="#FC4C02"
           weight={4}
         />
