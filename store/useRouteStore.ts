@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { get } from 'zustand/middleware';
 
 export interface Waypoint {
   id: string;
@@ -34,36 +33,36 @@ export const useRouteStore = create<RouteState>((set) => ({
 
   addWaypoint: (lat: number, lng: number) => {
     const id = Date.now().toString() + Math.random().toString(36).substring(2, 9);
-    get().fetchSnappedPath();
-    return {
-      waypoints: [...get().waypoints, { id, lat, lng }],
-    };
+    set((state) => {
+      state.fetchSnappedPath();
+      return { waypoints: [...state.waypoints, { id, lat, lng }] };
+    });
   },
-  
+
   removeWaypoint: (id: string) => {
-    set((state) => ({
-      waypoints: state.waypoints.filter((wp) => wp.id !== id),
-    }));
-    get().fetchSnappedPath();
+    set((state) => {
+      state.fetchSnappedPath();
+      return { waypoints: state.waypoints.filter((wp) => wp.id !== id) };
+    });
   },
-  
+
   reorderWaypoints: (oldIndex: number, newIndex: number) => {
     set((state) => {
       const newWaypoints = [...state.waypoints];
       const [movedItem] = newWaypoints.splice(oldIndex, 1);
       newWaypoints.splice(newIndex, 0, movedItem);
+      state.fetchSnappedPath();
       return { waypoints: newWaypoints };
     });
-    get().fetchSnappedPath();
   },
-  
+
   moveWaypoint: (id: string, lat: number, lng: number) => {
-    set((state) => ({
-      waypoints: state.waypoints.map((wp) =>
+    set((state) => {
+      state.fetchSnappedPath();
+      return { waypoints: state.waypoints.map((wp) =>
         wp.id === id ? { ...wp, lat, lng } : wp
-      ),
-    }));
-    get().fetchSnappedPath();
+      )};
+    });
   },
 
   setConfig: (config: Partial<RouteState>) => {
@@ -71,7 +70,7 @@ export const useRouteStore = create<RouteState>((set) => ({
   },
 
   fetchSnappedPath: async () => {
-    const waypoints = get().waypoints;
+    const waypoints = JSON.parse(JSON.stringify(useRouteStore.getState().waypoints));
 
     if (waypoints.length < 2) {
       set({ snappedPath: [] });
@@ -80,7 +79,7 @@ export const useRouteStore = create<RouteState>((set) => ({
 
     try {
       const waypointsString = waypoints
-        .map((wp) => `${wp.lng},${wp.lat}`)
+        .map((wp: Waypoint) => `${wp.lng},${wp.lat}`)
         .join(';');
 
       const url = `https://router.project-osrm.org/route/v1/foot/${waypointsString}?overview=full&geometries=geojson`;
@@ -100,11 +99,11 @@ export const useRouteStore = create<RouteState>((set) => ({
 
         set({ snappedPath });
       } else {
-        set({ snappedPath: waypoints.map((wp) => [wp.lat, wp.lng]) });
+        set({ snappedPath: waypoints.map((wp: Waypoint) => [wp.lat, wp.lng]) });
       }
     } catch (error) {
       console.error('Failed to fetch snapped path:', error);
-      set({ snappedPath: waypoints.map((wp) => [wp.lat, wp.lng]) });
+      set({ snappedPath: waypoints.map((wp: Waypoint) => [wp.lat, wp.lng]) });
     }
   },
 }));
