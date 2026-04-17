@@ -2,16 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Realism & Activity Types
-current_phase: 5
-status: Defining requirements
-stopped_at: Milestone v1.1 started
-last_updated: "2026-04-17T08:12:00.000Z"
+current_phase: 6
+status: Execution complete
+stopped_at: Phase 05 UI Selector & Export Wiring complete
+last_updated: "2026-04-17T08:45:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 0
-  total_plans: 8
-  completed_plans: 0
-  percent: 0
+  completed_phases: 1
+  total_plans: 2
+  completed_plans: 2
 ---
 
 # Project State
@@ -21,20 +20,21 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Empower users to easily and realistically generate synthetic workout data that seamlessly uploads to Strava without looking fake.
-**Current focus:** Phase 05 — Activity Type System
+**Current focus:** Phase 06 — Configuration UX
 
 ## Status
 
-**Current Phase:** 5
-**Last session:** 2026-04-17
-**Stopped at:** Milestone v1.1 requirements and roadmap defined
+**Current Phase:** 6
+**Last session:** 2026-04-17T08:45:00.000Z
+**Stopped at:** Phase 05 UI Selector & Export Wiring complete
 
-[░░░░░░░░░░] 0%
+[▓░░░░░░░░░] 25% (1/4 phases)
 
 ## Recent Actions
 
 - 2026-04-17: v1.0 MVP complete and tagged. All 13 requirements shipped.
 - 2026-04-17: v1.1 milestone started — 12 requirements, 4 phases, 8 plans.
+- 2026-04-17: Phase 5 (Activity Type System) completed. Sport selector & bios implemented.
 
 ## Decisions
 

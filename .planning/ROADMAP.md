@@ -19,7 +19,7 @@
 
 ### 🚧 v1.1 Realism & Activity Types (In Progress)
 
-- [ ] **Phase 5: Activity Type System** — Sport selector with per-type biometric profiles and Strava sport encoding
+- [x] **Phase 5: Activity Type System** — Sport selector with per-type biometric profiles and Strava sport encoding
 - [ ] **Phase 6: Configuration UX** — Timezone picker and pace unit toggle
 - [ ] **Phase 7: Enhanced Simulation** — Gradient-responsive cadence/HR, GPS noise, warm-up/cool-down curves
 - [ ] **Phase 8: Data Preview Charts** — Pace and HR charts rendered before export
@@ -27,18 +27,19 @@
 ## Phase Details
 
 ### Phase 5: Activity Type System
-**Goal**: Let users choose Running, Walking, Cycling, or Hiking — each with biometric profiles tuned to that sport.
-**Depends on**: Phase 4
-**Requirements**: ACT-01, ACT-02, ACT-03
-**Success Criteria** (what must be TRUE):
-  1. User can select activity type from a dropdown or selector in the sidebar.
-  2. Generated biometrics (HR zones, cadence range, pace range) differ meaningfully between activity types.
-  3. Exported GPX/TCX encodes the correct Strava sport type string for the selected activity.
-**Plans**: 2 plans
+  - **Goal**: Let users choose Running, Walking, Cycling, or Hiking — each with biometric profiles tuned to that sport.
+  - **Depends on**: Phase 4
+  - **Requirements**: ACT-01, ACT-02, ACT-03
+  - **Success Criteria**:
+    1. User can select activity type from a dropdown or selector in the sidebar.
+    2. Generated biometrics (HR zones, cadence range, pace range) differ meaningfully between activity types.
+    3. Exported GPX/TCX encodes the correct Strava sport type string for the selected activity.
+  - **Plans**: 2 plans — [See detail](.planning/phases/05-activity-type-system/)
+  - **Status**: COMPLETE ✓
 
 Plans:
-- [ ] 05-01: Add ActivityType enum, per-type biometric profile config, and update biometric-simulator
-- [ ] 05-02: Update UI selector and wire activity type through export layer (GPX/TCX sport tags)
+- [x] 05-01: Add ActivityType enum, per-type biometric profile config, and update biometric-simulator
+- [x] 05-02: Update UI selector and wire activity type through export layer (GPX/TCX sport tags)
 
 ### Phase 6: Configuration UX
 **Goal**: Users can pick GMT timezone and toggle pace units — UI preferences that propagate correctly through to exports.
@@ -93,7 +94,7 @@ Plans:
 | 2. UI Controls & Road Snapping | v1.0 | 2/2 | Complete | 2026-04-16 |
 | 3. Route Interpolator Brain | v1.0 | 2/2 | Complete | 2026-04-17 |
 | 4. Export Engine | v1.0 | 2/2 | Complete | 2026-04-17 |
-| 5. Activity Type System | v1.1 | 0/2 | Not started | - |
-| 6. Configuration UX | v1.1 | 0/2 | Not started | - |
+| 5. Activity Type System | v1.1 | 2/2 | Complete | 2026-04-17 |
+| 6. Configuration UX | v1.1 | 2/2 | Not started | - |
 | 7. Enhanced Simulation | v1.1 | 0/2 | Not started | - |
 | 8. Data Preview Charts | v1.1 | 0/2 | Not started | - |
