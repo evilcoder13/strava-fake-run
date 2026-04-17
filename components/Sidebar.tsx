@@ -73,7 +73,8 @@ function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; ind
 }
 
 export default function Sidebar() {
-  const { waypoints, reorderWaypoints, setConfig, startDate, startTime, paceMinutes, paceSeconds, useNoise } = useRouteStore();
+  const { waypoints, reorderWaypoints, setConfig, startDate, startTime, paceMinutes, paceSeconds, useNoise,
+          snappedPath, generatedActivity, isGenerating, generateActivity } = useRouteStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -152,6 +153,22 @@ export default function Sidebar() {
             />
           </div>
         </div>
+      </div>
+
+      <div className="p-4 bg-gray-50 border-b border-gray-200">
+        <h2 className="text-sm font-semibold text-gray-900 mb-3">Activity</h2>
+        <button
+          onClick={generateActivity}
+          disabled={snappedPath.length < 2 || isGenerating}
+          className="w-full py-2 px-4 bg-[#FC4C02] text-white text-sm font-medium rounded-md hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {isGenerating ? 'Generating...' : 'Generate Activity'}
+        </button>
+        {generatedActivity !== null && (
+          <p className="text-xs text-gray-500 mt-2">
+            {generatedActivity.length} points generated
+          </p>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
