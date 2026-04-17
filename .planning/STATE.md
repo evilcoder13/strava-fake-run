@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Realism & Activity Types
 current_phase: 8
-status: Complete
-stopped_at: Phase 07 Enhanced Simulation complete
-last_updated: "2026-04-17T08:57:00.000Z"
+status: SHIPPED
+stopped_at: Milestone v1.1 Realism & Activity Types complete
+last_updated: "2026-04-17T09:00:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  completed_phases: 4
+  total_plans: 8
+  completed_plans: 8
 ---
 
 # Project State
@@ -20,12 +20,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Empower users to easily and realistically generate synthetic workout data that seamlessly uploads to Strava without looking fake.
-**Current Focus:** Phase 08 — Data Preview Charts
+**Current Focus:** Milestone v1.1 Complete
 **Current Phase:** 8
-**Last session:** 2026-04-17T08:57:00.000Z
-**Stopped at:** Phase 07 Enhanced Simulation complete
+**Last session:** 2026-04-17T09:00:00.000Z
+**Stopped at:** Milestone v1.1 Realism & Activity Types complete
 
-[▓▓▓▓▓▓▓▓░░] 75% (3/4 phases)
+[▓▓▓▓▓▓▓▓▓▓] 100% (4/4 phases)
 
 ## Recent Actions
 
@@ -34,6 +34,7 @@ See: .planning/PROJECT.md (updated 2026-04-17)
 - 2026-04-17: Phase 5 (Activity Type System) completed. Sport selector & bios implemented.
 - 2026-04-17: Phase 6 (Configuration UX) completed. Timezone & Pace/Speed toggle implemented.
 - 2026-04-17: Phase 7 (Enhanced Simulation) completed. Gradient response, GPS noise, and cool-down implemented.
+- 2026-04-17: Phase 8 (Data Preview Charts) completed. Recharts integration for HR/Pace visual review. v1.1 SHIPPED.
 
 ## Decisions
 

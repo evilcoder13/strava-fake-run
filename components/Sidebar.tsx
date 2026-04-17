@@ -1,7 +1,10 @@
 "use client";
 
 import { useRouteStore } from "@/store/useRouteStore";
-import { Trash2, GripVertical, Footprints, PersonStanding, Bike, Mountain } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Trash2, GripVertical, Footprints, PersonStanding, Bike, Mountain, ChevronDown, ChevronUp } from "lucide-react";
+
+const ActivityCharts = dynamic(() => import("./ActivityCharts"), { ssr: false });
 import {
   DndContext,
   closestCenter,
@@ -279,6 +282,14 @@ export default function Sidebar() {
         >
           {isGenerating ? 'Generating...' : 'Generate Activity'}
         </button>
+        {generatedActivity && (
+          <div className="mt-4 border-t pt-4">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Preview Charts</span>
+            </div>
+            <ActivityCharts data={generatedActivity} />
+          </div>
+        )}
         {generatedActivity !== null && generatedActivity.length > 0 && (
           <div className="mt-4 space-y-2">
             <p className="text-xs text-gray-500 text-center mb-2">

@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phases 1-4 (shipped 2026-04-17)
-- 🚧 **v1.1 Realism & Activity Types** — Phases 5-8 (in progress)
+- ✅ **v1.1 Realism & Activity Types** — Phases 5-8 (shipped 2026-04-17)
 
 ## Phases
 
@@ -22,7 +22,7 @@
 - [x] **Phase 5: Activity Type System** — Sport selector with per-type biometric profiles and Strava sport encoding
 - [x] **Phase 7: Enhanced Simulation** — Gradient-responsive cadence/HR, GPS noise, warm-up/cool-down curves
 - [ ] **Phase 8: Data Preview Charts** — Pace and HR charts rendered before export
-- [ ] **Phase 8: Data Preview Charts** — Pace and HR charts rendered before export
+- [x] **Phase 8: Data Preview Charts** — Pace and HR charts rendered before export
 
 ## Phase Details
 
@@ -81,8 +81,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 08-01: Install charting library (Recharts or Chart.js) and implement PaceChart component
-- [ ] 08-02: Implement HRChart component and wire both charts to generatedActivity store slice
+- [x] 08-01: Install charting library (Recharts or Chart.js) and implement PaceChart component
+- [x] 08-02: Implement HRChart component and wire both charts to generatedActivity store slice
 
 ## Progress
 
@@ -97,4 +97,4 @@ Plans:
 | 5. Activity Type System | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 6. Configuration UX | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 7. Enhanced Simulation | v1.1 | 2/2 | Complete | 2026-04-17 |
-| 8. Data Preview Charts | v1.1 | 0/2 | Not started | - |
+| 8. Data Preview Charts | v1.1 | 2/2 | Complete | 2026-04-17 |

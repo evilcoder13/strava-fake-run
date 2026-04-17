@@ -9,6 +9,7 @@ export interface ActivityPoint {
   cadence: number;           // steps per minute (spm, both feet) integer
   elevation: number;         // meters above sea level
   distFromStartKm: number;   // cumulative distance from route start in km
+  paceMinKm: number;         // decimal minutes per km (for charting)
 }
 
 export interface InterpolatedPoint {

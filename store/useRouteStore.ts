@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { ActivityPoint } from '@/lib/types/activity';
 import { ActivityType } from '@/lib/types/activity';
 import { interpolatePath } from '@/lib/route-interpolator';
-import { computeHR, computeCadence } from '@/lib/biometric-simulator';
+import { computeHR, computeCadence, gaussianRandom } from '@/lib/biometric-simulator';
 import { fetchElevations } from '@/lib/elevation-simulator';
 import { SPORT_PROFILES } from '@/lib/sport-profiles';
 
@@ -143,25 +143,57 @@ export const useRouteStore = create<RouteState>((set) => ({
       const totalSeconds = points[points.length - 1].elapsedSeconds;
       const sportProfile = SPORT_PROFILES[state.activityType];
 
-      const activity: ActivityPoint[] = points.map((p, i) => ({
-        lat: p.lat,
-        lon: p.lon,
-        timestamp: p.timestamp,
-        distFromStartKm: p.distFromStartKm,
-        heartRate: computeHR({
-          elapsedSeconds: p.elapsedSeconds,
-          totalSeconds,
-          paceSecPerKm,
-          addNoise: state.useNoise,
-          profile: sportProfile,
-        }),
-        cadence: computeCadence({
-          paceSecPerKm,
-          addNoise: state.useNoise,
-          profile: sportProfile,
-        }),
-        elevation: elevations[i] ?? 0,
-      }));
+      const activity: ActivityPoint[] = points.map((p, i) => {
+        // Calculate gradient (SIM-01, SIM-02)
+        let gradient = 0;
+        if (i > 0) {
+          const elevDiff = (elevations[i] ?? 0) - (elevations[i - 1] ?? 0);
+          const distDiffKm = p.distFromStartKm - points[i - 1].distFromStartKm;
+          if (distDiffKm > 0) {
+            gradient = (elevDiff / 1000) / distDiffKm; // grade = (delta_elevation_km / delta_distance_km)
+          }
+        }
+
+        const progress = i / (points.length - 1);
+
+        // GPS noise (SIM-03)
+        // 0.00001 degrees is ~1.1 meters. stdDev=1.0 puts 68% points within 1m.
+        let finalLat = p.lat;
+        let finalLon = p.lon;
+        if (state.useNoise) {
+          finalLat = gaussianRandom(p.lat, 0.00001);
+          finalLon = gaussianRandom(p.lon, 0.00001);
+        }
+
+        // Calculate instant pace (SIM-04 / Realism)
+        // 1.0 factor: 10% grade adds 1.0 min/km to pace
+        const paceBase = state.paceMinutes + state.paceSeconds / 60;
+        const paceAdjusted = paceBase + Math.max(0, gradient * 10);
+
+        return {
+          lat: finalLat,
+          lon: finalLon,
+          timestamp: p.timestamp,
+          distFromStartKm: p.distFromStartKm,
+          paceMinKm: paceAdjusted,
+          heartRate: computeHR({
+            elapsedSeconds: p.elapsedSeconds,
+            totalSeconds,
+            paceSecPerKm,
+            addNoise: state.useNoise,
+            profile: sportProfile,
+            gradient,
+            progress,
+          }),
+          cadence: computeCadence({
+            paceSecPerKm,
+            addNoise: state.useNoise,
+            profile: sportProfile,
+            gradient,
+          }),
+          elevation: elevations[i] ?? 0,
+        };
+      });
 
       set({ generatedActivity: activity, isGenerating: false });
     } catch (error) {

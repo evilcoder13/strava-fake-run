@@ -19,6 +19,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-leaflet": "^4.2.1",
+    "recharts": "^3.8.1",
     "xmlbuilder2": "^4.0.3",
     "zustand": "^5.0.12"
   },

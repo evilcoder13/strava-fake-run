@@ -19,6 +19,20 @@ describe('computeHR', () => {
     const hr = computeHR({ elapsedSeconds: 600, totalSeconds: 1800, paceSecPerKm: 330 });
     expect(Number.isInteger(hr)).toBe(true);
   });
+
+  it('increases HR on steep climb gradients (SIM-02)', () => {
+    const flatHR = computeHR({ elapsedSeconds: 600, totalSeconds: 1800, paceSecPerKm: 330, gradient: 0 });
+    const climbHR = computeHR({ elapsedSeconds: 600, totalSeconds: 1800, paceSecPerKm: 330, gradient: 0.1 }); // 10% grade
+    expect(climbHR).toBeGreaterThan(flatHR);
+    expect(climbHR - flatHR).toBeCloseTo(15, 0); // 150 factor * 0.1
+  });
+
+  it('drops HR during cool-down phase (SIM-04)', () => {
+    const peakHR = computeHR({ elapsedSeconds: 1700, totalSeconds: 1800, paceSecPerKm: 330, progress: 0.94 });
+    const endHR = computeHR({ elapsedSeconds: 1799, totalSeconds: 1800, paceSecPerKm: 330, progress: 0.999 });
+    expect(endHR).toBeLessThan(peakHR);
+    expect(endHR).toBeCloseTo(65, 0); // Should be near rest
+  });
 });
 
 describe('computeCadence', () => {
@@ -26,6 +40,19 @@ describe('computeCadence', () => {
     const spm = computeCadence({ paceSecPerKm: 330 });
     expect(spm).toBeGreaterThanOrEqual(165);
     expect(spm).toBeLessThanOrEqual(175);
+  });
+
+  it('reduces cadence on steep climbs (SIM-01)', () => {
+    // Only profile-based cadence currently implements SIM-01
+    const { ActivityType } = require('../types/activity');
+    const { SPORT_PROFILES } = require('../sport-profiles');
+    const profile = SPORT_PROFILES[ActivityType.Running];
+    
+    const flatCadence = computeCadence({ paceSecPerKm: 330, profile, gradient: 0 });
+    const climbCadence = computeCadence({ paceSecPerKm: 330, profile, gradient: 0.1 });
+    // 200 factor * 0.1 = 20 drop
+    expect(climbCadence).toBeLessThan(flatCadence);
+    expect(flatCadence - climbCadence).toBeCloseTo(20, 0);
   });
 
   it('at 4:00/km (240 s/km) returns ~180 spm', () => {

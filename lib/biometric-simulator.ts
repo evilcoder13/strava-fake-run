@@ -4,8 +4,8 @@
 
 import type { SportProfile } from './types/activity';
 
-// Box-Muller transform — private noise utility
-function gaussianRandom(mean: number, stdDev: number): number {
+// Box-Muller transform — noise utility
+export function gaussianRandom(mean: number, stdDev: number): number {
   let u1: number, u2: number;
   do { u1 = Math.random(); } while (u1 === 0);
   do { u2 = Math.random(); } while (u2 === 0);
@@ -30,6 +30,8 @@ export function computeHR(params: {
   maxHR?: number;     // [ASSUMED default: 185 bpm — 220 - 35yr age formula]
   addNoise?: boolean;
   profile?: SportProfile;   // When provided, overrides paceToKarvonenFraction with profile.hrr
+  gradient?: number;        // delta_elevation / delta_distance_meters
+  progress?: number;        // 0.0 to 1.0 (elapsedSeconds / totalSeconds)
 }): number {
   const { elapsedSeconds, totalSeconds, paceSecPerKm } = params;
   const restHR = params.restHR ?? 65;
@@ -52,19 +54,37 @@ export function computeHR(params: {
   const drift = totalSeconds > 0 ? (elapsedSeconds / totalSeconds) * 5 : 0;
 
   const raw = baseHR + drift;
-  return Math.round(params.addNoise ? gaussianRandom(raw, 3) : raw);
+  
+  // Apply Cool-down ramp (last 5% of activity)
+  const progress = params.progress ?? 0;
+  const coolDownFactor = progress > 0.95 ? (1 - progress) / 0.05 : 1.0;
+  const finalSteady = restHR + (raw - restHR) * coolDownFactor;
+
+  // Apply Gradient bonus (SIM-02)
+  // factor 150 means 10% grade (0.1) adds 15 bpm
+  const gradient = params.gradient ?? 0;
+  const climbBonus = Math.max(0, gradient * 150);
+
+  const finalHR = finalSteady + climbBonus;
+  return Math.round(params.addNoise ? gaussianRandom(finalHR, 3) : finalHR);
 }
 
 export function computeCadence(params: {
   paceSecPerKm: number;
   addNoise?: boolean;
   profile?: SportProfile;   // When provided, cadence drawn from profile.cadence range
+  gradient?: number;
 }): number {
   // When a sport profile is provided, use its cadence range (midpoint + noise)
   if (params.profile) {
     const { min, max } = params.profile.cadence;
     const mid = (min + max) / 2;
-    return Math.round(params.addNoise ? gaussianRandom(mid, (max - min) / 6) : mid);
+    // Apply Gradient response (SIM-01)
+    // uphill (positive gradient) drops cadence; downhill rises it
+    // 200 factor means 10% grade (0.1) drops cadence by 20
+    const gradient = params.gradient ?? 0;
+    const adjustedMid = mid - (gradient * 200);
+    return Math.round(params.addNoise ? gaussianRandom(adjustedMid, (max - min) / 6) : adjustedMid);
   }
 
   // Legacy running-only linear model (kept for backwards compatibility)
