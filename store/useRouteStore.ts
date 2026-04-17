@@ -10,6 +10,12 @@ export interface Waypoint {
   lng: number;
 }
 
+// Data-only fields that callers are allowed to update via setConfig.
+// Restricting to Pick prevents accidental overwrite of store action functions.
+type RouteConfig = Pick<RouteState,
+  'startDate' | 'startTime' | 'paceMinutes' | 'paceSeconds' | 'useNoise'
+>;
+
 interface RouteState {
   waypoints: Waypoint[];
   snappedPath: [number, number][];
@@ -23,7 +29,7 @@ interface RouteState {
   reorderWaypoints: (oldIndex: number, newIndex: number) => void;
   moveWaypoint: (id: string, lat: number, lng: number) => void;
   fetchSnappedPath: () => Promise<void>;
-  setConfig: (config: Partial<RouteState>) => void;
+  setConfig: (config: Partial<RouteConfig>) => void;
   generatedActivity: ActivityPoint[] | null;
   isGenerating: boolean;
   generateActivity: () => Promise<void>;
@@ -74,7 +80,7 @@ export const useRouteStore = create<RouteState>((set) => ({
     useRouteStore.getState().fetchSnappedPath();
   },
 
-  setConfig: (config: Partial<RouteState>) => {
+  setConfig: (config: Partial<RouteConfig>) => {
     set(config);
   },
 
