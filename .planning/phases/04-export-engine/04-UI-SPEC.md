@@ -59,14 +59,10 @@ Source: existing Sidebar uses `p-4` (16px) and `gap-2` (8px) / `gap-3` (12px) pa
 
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
-| Body | 14px (text-sm) | 400 (font-normal) | 1.5 |
-| Label | 12px (text-xs) | 500 (font-medium) | 1.4 |
-| Button | 14px (text-sm) | 500 (font-medium) | 1 (single line) |
-| Section heading | 14px (text-sm) | 600 (font-semibold) | 1.2 |
+| Body / Button | 14px (text-sm) | 400 (font-normal) | 1.5 |
+| Label / Button active | 14px (text-sm) | 500 (font-medium) | 1 (single line) |
 
-Only 2 weights used: 400 (normal) and the medium/semibold cluster treated as 500-600 per context.
-For practical CSS declaration: regular (400) and medium (500) as the two distinct weights; semibold
-(600) is reserved for section headings and already established in existing code.
+Note: font-semibold (600) is present in existing Sidebar headings but not introduced by this phase — no new section headings are added in Phase 4.
 
 Source: Sidebar.tsx uses `text-sm font-medium` for buttons, `text-sm font-semibold` for headings,
 `text-xs text-gray-500` for status copy.
@@ -103,6 +99,8 @@ Source: tailwind.config.ts (`orange.500: #FC4C02`), Sidebar.tsx button class str
 Placement: inside the existing Activity section `<div>`, after the `{generatedActivity.length} points generated` `<p>` tag.
 
 Conditional render: `{generatedActivity !== null && <ExportButtons />}`
+
+Primary visual anchor: the two accent-fill download buttons, which appear as the only color element below the status line.
 
 Structure:
 ```
