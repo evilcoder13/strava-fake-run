@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import type { ActivityPoint } from '@/lib/types/activity';
 import { interpolatePath } from '@/lib/route-interpolator';
+import { computeHR, computeCadence } from '@/lib/biometric-simulator';
+import { fetchElevations } from '@/lib/elevation-simulator';
 
 export interface Waypoint {
   id: string;
@@ -81,6 +83,7 @@ export const useRouteStore = create<RouteState>((set) => ({
     if (state.snappedPath.length < 2) return;
     set({ isGenerating: true });
     try {
+      // Step 1: Temporal interpolation (CFG-04)
       const points = interpolatePath({
         snappedPath: state.snappedPath,
         startDate: state.startDate,
@@ -90,18 +93,44 @@ export const useRouteStore = create<RouteState>((set) => ({
         useNoise: state.useNoise,
         intervalSeconds: 10,
       });
-      // Plan 02 will merge HR, cadence, elevation onto points.
-      // For now store as ActivityPoint[] with placeholder biometrics (heartRate: 0, cadence: 0, elevation: 0).
-      // Plan 02 replaces this stub with full biometric computation.
-      const activity: ActivityPoint[] = points.map(p => ({
+
+      if (points.length === 0) {
+        set({ isGenerating: false });
+        return;
+      }
+
+      // Step 2: Elevation fetch (BIO-03)
+      // Fallback to 0m elevation if API fails — Strava accepts 0-elevation tracks
+      let elevations: number[];
+      try {
+        elevations = await fetchElevations(points.map(p => ({ lat: p.lat, lon: p.lon })));
+      } catch (elevErr) {
+        console.error('Elevation fetch failed, defaulting to 0m:', elevErr);
+        elevations = new Array(points.length).fill(0);
+      }
+
+      // Step 3: HR + Cadence (BIO-01, BIO-02)
+      const paceSecPerKm = state.paceMinutes * 60 + state.paceSeconds;
+      const totalSeconds = points[points.length - 1].elapsedSeconds;
+
+      const activity: ActivityPoint[] = points.map((p, i) => ({
         lat: p.lat,
         lon: p.lon,
         timestamp: p.timestamp,
         distFromStartKm: p.distFromStartKm,
-        heartRate: 0,    // placeholder — Plan 02 fills this
-        cadence: 0,      // placeholder — Plan 02 fills this
-        elevation: 0,    // placeholder — Plan 02 fills this
+        heartRate: computeHR({
+          elapsedSeconds: p.elapsedSeconds,
+          totalSeconds,
+          paceSecPerKm,
+          addNoise: state.useNoise,
+        }),
+        cadence: computeCadence({
+          paceSecPerKm,
+          addNoise: state.useNoise,
+        }),
+        elevation: elevations[i] ?? 0,
       }));
+
       set({ generatedActivity: activity, isGenerating: false });
     } catch (error) {
       console.error('Failed to generate activity:', error);
