@@ -13,7 +13,7 @@ function gaussianRandom(mean: number, stdDev: number): number {
 }
 
 export function interpolatePath(opts: InterpolateOptions): InterpolatedPoint[] {
-  const { snappedPath, startDate, startTime, paceMinutes, paceSeconds, useNoise } = opts;
+  const { snappedPath, startDate, startTime, timezoneOffset, paceMinutes, paceSeconds, useNoise } = opts;
   const intervalSec = opts.intervalSeconds ?? 10;
 
   // Guard: need at least 2 points to form a line
@@ -27,11 +27,13 @@ export function interpolatePath(opts: InterpolateOptions): InterpolatedPoint[] {
 
   const paceSecPerKm = paceMinutes * 60 + paceSeconds;
   // Normalize startTime to "HH:MM" — browsers with seconds enabled return "HH:MM:SS",
-  // which would produce an invalid ISO string like "2024-01-15T08:00:30:00.000Z".
+  // which would produce an invalid ISO string like "2024-01-15T08:00:30+07:00".
   const normalizedTime = startTime.substring(0, 5);
-  // Parse startTime as UTC to avoid local timezone offset issues
-  const startMs = new Date(`${startDate}T${normalizedTime}:00.000Z`).getTime();
-  if (isNaN(startMs)) throw new Error(`Invalid startDate/startTime: ${startDate} ${startTime}`);
+  
+  // Parse startTime using the specified timezone offset so the local time reflects the user's intent
+  const isoDateString = `${startDate}T${normalizedTime}:00${timezoneOffset}`;
+  const startMs = new Date(isoDateString).getTime();
+  if (isNaN(startMs)) throw new Error(`Invalid date format: ${isoDateString}`);
 
   const points: InterpolatedPoint[] = [];
   let cumDistKm = 0;

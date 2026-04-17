@@ -23,6 +23,7 @@ export interface InterpolateOptions {
   snappedPath: [number, number][];  // [lat, lon] Leaflet format — MUST flip to [lon, lat] for turf
   startDate: string;                // "YYYY-MM-DD"
   startTime: string;                // "HH:MM"
+  timezoneOffset: string;           // "+07:00", "-04:00", "Z", etc
   paceMinutes: number;
   paceSeconds: number;
   useNoise: boolean;

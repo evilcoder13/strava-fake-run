@@ -35,6 +35,20 @@ const ACTIVITY_OPTIONS: { type: ActivityType; label: string; icon: LucideIcon }[
   { type: ActivityType.Hiking,  label: 'Hike',  icon: Mountain },
 ];
 
+// Generate standard timezone offsets
+const TIMEZONE_OPTIONS: { value: string; label: string }[] = [];
+for (let i = -12; i <= 14; i++) {
+  const sign = i < 0 ? "-" : "+";
+  const hm = `${Math.abs(i).toString().padStart(2, "0")}:00`;
+  TIMEZONE_OPTIONS.push({ value: `${sign}${hm}`, label: `UTC ${sign}${hm}` });
+}
+TIMEZONE_OPTIONS.push({ value: "+05:30", label: "UTC +05:30" });
+TIMEZONE_OPTIONS.push({ value: "+09:30", label: "UTC +09:30" });
+TIMEZONE_OPTIONS.sort((a,b) => {
+  // Simple textual sort handles offsets nicely since format is strictly matched
+  return a.value.localeCompare(b.value);
+});
+
 // Sub-component for individual waypoint items
 function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; index: number }) {
   const {
@@ -87,7 +101,7 @@ function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; ind
 }
 
 export default function Sidebar() {
-  const { waypoints, reorderWaypoints, setConfig, startDate, startTime, paceMinutes, paceSeconds, useNoise,
+  const { waypoints, reorderWaypoints, setConfig, startDate, startTime, timezoneOffset, paceMinutes, paceSeconds, useNoise, useSpeedUnit,
           snappedPath, generatedActivity, isGenerating, generateActivity,
           activityType, setActivityType } = useRouteStore();
 
@@ -137,26 +151,78 @@ export default function Sidebar() {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Target Pace (min/km)</label>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                min="0"
-                max="99"
-                value={paceMinutes}
-                onChange={(e) => setConfig({ paceMinutes: parseInt(e.target.value) || 0 })}
-                className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
-              />
-              <span className="text-sm text-gray-600">:</span>
-              <input
-                type="number"
-                min="0"
-                max="59"
-                value={paceSeconds}
-                onChange={(e) => setConfig({ paceSeconds: parseInt(e.target.value) || 0 })}
-                className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
-              />
+            <label className="block text-xs font-medium text-gray-700 mb-1">Timezone Offset</label>
+            <select
+              value={timezoneOffset}
+              onChange={(e) => setConfig({ timezoneOffset: e.target.value })}
+              className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white"
+            >
+              {TIMEZONE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <label className="block text-xs font-medium text-gray-700">Target Effort</label>
+              <div className="flex bg-gray-200 rounded-md p-0.5">
+                <button 
+                  onClick={() => setConfig({ useSpeedUnit: false })}
+                  className={`text-[10px] px-2 py-0.5 rounded ${!useSpeedUnit ? 'bg-white shadow-sm font-medium text-gray-900' : 'text-gray-500'}`}
+                >
+                  Pace
+                </button>
+                <button 
+                  onClick={() => setConfig({ useSpeedUnit: true })}
+                  className={`text-[10px] px-2 py-0.5 rounded ${useSpeedUnit ? 'bg-white shadow-sm font-medium text-gray-900' : 'text-gray-500'}`}
+                >
+                  Speed
+                </button>
+              </div>
             </div>
+            
+            {!useSpeedUnit ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min="0"
+                  max="99"
+                  value={paceMinutes}
+                  onChange={(e) => setConfig({ paceMinutes: parseInt(e.target.value) || 0 })}
+                  className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
+                />
+                <span className="text-sm text-gray-600">:</span>
+                <input
+                  type="number"
+                  min="0"
+                  max="59"
+                  value={paceSeconds}
+                  onChange={(e) => setConfig({ paceSeconds: parseInt(e.target.value) || 0 })}
+                  className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
+                />
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min="1"
+                  max="50"
+                  step="0.1"
+                  value={parseFloat((60 / (paceMinutes + paceSeconds / 60)).toFixed(1))}
+                  onChange={(e) => {
+                    const speed = parseFloat(e.target.value);
+                    if (speed > 0) {
+                      const totalMinutes = 60 / speed;
+                      const mins = Math.floor(totalMinutes);
+                      const secs = Math.round((totalMinutes - mins) * 60);
+                      setConfig({ paceMinutes: mins, paceSeconds: secs });
+                    }
+                  }}
+                  className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                />
+                <span className="text-sm text-gray-600">km/h</span>
+              </div>
+            )}
           </div>
           <div className="flex items-center justify-between">
             <label className="text-sm text-gray-700">Enable Pacing Noise</label>

@@ -12,10 +12,19 @@ export interface Waypoint {
   lng: number;
 }
 
+export function getLocalTimezoneOffsetString(): string {
+  const offset = new Date().getTimezoneOffset(); // in minutes
+  const sign = offset > 0 ? "-" : "+";
+  const absOffset = Math.abs(offset);
+  const hours = Math.floor(absOffset / 60).toString().padStart(2, "0");
+  const minutes = (absOffset % 60).toString().padStart(2, "0");
+  return `${sign}${hours}:${minutes}`;
+}
+
 // Data-only fields that callers are allowed to update via setConfig.
 // Restricting to Pick prevents accidental overwrite of store action functions.
 type RouteConfig = Pick<RouteState,
-  'startDate' | 'startTime' | 'paceMinutes' | 'paceSeconds' | 'useNoise' | 'activityType'
+  'startDate' | 'startTime' | 'timezoneOffset' | 'paceMinutes' | 'paceSeconds' | 'useNoise' | 'useSpeedUnit' | 'activityType'
 >;
 
 interface RouteState {
@@ -23,9 +32,11 @@ interface RouteState {
   snappedPath: [number, number][];
   startDate: string;
   startTime: string;
+  timezoneOffset: string;
   paceMinutes: number;
   paceSeconds: number;
   useNoise: boolean;
+  useSpeedUnit: boolean;
   activityType: ActivityType;
   setActivityType: (type: ActivityType) => void;
   addWaypoint: (lat: number, lng: number) => void;
@@ -44,9 +55,11 @@ export const useRouteStore = create<RouteState>((set) => ({
   snappedPath: [],
   startDate: new Date().toISOString().split('T')[0],
   startTime: "08:00",
+  timezoneOffset: getLocalTimezoneOffsetString(),
   paceMinutes: 5,
   paceSeconds: 30,
   useNoise: false,
+  useSpeedUnit: false,
   activityType: ActivityType.Running,
   generatedActivity: null,
   isGenerating: false,
@@ -103,6 +116,7 @@ export const useRouteStore = create<RouteState>((set) => ({
         snappedPath: state.snappedPath,
         startDate: state.startDate,
         startTime: state.startTime,
+        timezoneOffset: state.timezoneOffset,
         paceMinutes: state.paceMinutes,
         paceSeconds: state.paceSeconds,
         useNoise: state.useNoise,
