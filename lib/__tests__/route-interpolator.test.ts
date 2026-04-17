@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { interpolatePath } from '@/lib/route-interpolator';
 
 describe('interpolatePath', () => {
@@ -55,6 +55,14 @@ describe('interpolatePath', () => {
   });
 
   it('useNoise=true produces at least one interval different from deterministic pace', () => {
+    // Mock Math.random to a fixed sequence so the test is fully deterministic.
+    // Box-Muller needs two non-zero values per call: [0.5, 0.5] yields
+    //   z0 = sqrt(-2*ln(0.5)) * cos(2π*0.5) ≈ -1.177
+    // so noisyPace ≈ 330 + (-1.177 * 16.5) ≈ 310.6 — clearly ≠ 330 (deterministic).
+    const sequence = [0.5, 0.5];
+    let seq = 0;
+    vi.spyOn(Math, 'random').mockImplementation(() => sequence[seq++ % sequence.length]);
+
     const snappedPath: [number, number][] = [
       [48.8584, 2.2945],
       [48.8584, 2.3005],
@@ -68,6 +76,9 @@ describe('interpolatePath', () => {
       useNoise: true,
       intervalSeconds: 10,
     });
+
+    vi.restoreAllMocks();
+
     const deterministicResult = interpolatePath({
       snappedPath,
       startDate: '2024-01-15',
@@ -77,7 +88,7 @@ describe('interpolatePath', () => {
       useNoise: false,
       intervalSeconds: 10,
     });
-    // With noise, cumulative distances will differ from no-noise at some point
+    // With seeded noise, cumulative distances must differ from no-noise at some point.
     // Point count may also differ. Either condition satisfies the test.
     const noisyDists = noiseResult.map(p => p.distFromStartKm);
     const deterministicDists = deterministicResult.map(p => p.distFromStartKm);
