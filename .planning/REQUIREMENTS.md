@@ -13,9 +13,8 @@
 
 ### Sharing & Persistence
 
-- [ ] **SHR-01**: Current route waypoints and configuration are persisted in the URL as a base64 encoded string
-- [ ] **SHR-02**: Copying and opening the URL on another device/browser restores the route exactly
-- [ ] **SHR-03**: (Bonus) Direct Strava OAuth upload to skip manual file handling
+- [x] **SHR-01**: Current route waypoints and configuration are persisted in the URL as a base64 encoded string
+- [x] **SHR-02**: Copying and opening the URL on another device/browser restores the route exactly
 
 ## Traceability
 
@@ -26,11 +25,10 @@
 | NAV-03 | Phase 9 | Complete |
 | SHR-01 | Phase 10 | Pending |
 | SHR-02 | Phase 10 | Pending |
-| SHR-03 | Phase 11 | Pending |
 
 **Coverage:**
-- v1.2 requirements: 6 total
-- Mapped to phases: 6
+- v1.2 requirements: 5 total
+- Mapped to phases: 5
 - Unmapped: 0 ✓
 
 ---

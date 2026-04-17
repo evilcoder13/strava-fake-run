@@ -27,6 +27,20 @@ function MapEvents() {
   return null;
 }
 
+function MapController() {
+  const mapCenter = useRouteStore((state) => state.mapCenter);
+  const mapZoom = useRouteStore((state) => state.mapZoom);
+  const map = useMapEvents({});
+
+  useEffect(() => {
+    if (mapCenter) {
+      map.flyTo(mapCenter, mapZoom || 13);
+    }
+  }, [mapCenter, mapZoom, map]);
+
+  return null;
+}
+
 export default function Map() {
   const waypoints = useRouteStore((state) => state.waypoints);
   const snappedPath = useRouteStore((state) => state.snappedPath);
@@ -52,6 +66,7 @@ export default function Map() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MapEvents />
+      <MapController />
       
       {waypoints.map((wp) => (
         <Marker

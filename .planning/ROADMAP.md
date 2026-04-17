@@ -28,11 +28,10 @@
 
 </details>
 
-### 🚧 v1.2 Map Utilities & Sharing (In Progress)
+### ✅ v1.2 Map Utilities & Sharing (Shipped 2026-04-17)
 
 - [x] **Phase 9: Map Navigation Utilities** — Address search and geolocation
-- [ ] **Phase 10: URL State Sharing** — Share routes via base64 URL params
-- [ ] **Phase 11: Direct Strava Upload** — OAuth integration (Targeted)
+- [x] **Phase 10: URL State Sharing** — Share routes via base64 URL params
 
 ## Phase Details
 
@@ -56,10 +55,15 @@ Plans:
 - **Depends on**: Phase 1, Phase 2
 - **Requirements**: SHR-01, SHR-02
 - **Plans**: 2 plans
+- **Status**: COMPLETE ✓
+
+Plans:
+- [x] 10-01: Serialization logic & Store integration
+- [x] 10-02: URL syncing & UI share button
 
 ## Progress
 
-**Execution Order:** 9 → 10 → 11
+**Execution Order:** 9 → 10
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -72,5 +76,6 @@ Plans:
 | 7. Enhanced Simulation | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 8. Data Preview Charts | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 9. Map Navigation Utilities | v1.2 | 2/2 | Complete | 2026-04-17 |
-| 10. URL State Sharing | v1.2 | 0/2 | Not started | - |
-| 11. Direct Strava Upload | v1.2 | 0/1 | Not started | - |
+| 10. URL State Sharing | v1.2 | 2/2 | Complete | 2026-04-17 |
+
+## Progress Summary

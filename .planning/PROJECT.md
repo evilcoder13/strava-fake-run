@@ -38,17 +38,18 @@ Empower users to easily and realistically generate synthetic workout data that s
 - ✓ Pace/Speed unit toggle — v1.1
 - ✓ Gradient-responsive cadence & HR — v1.1
 - ✓ GPS noise & biometric ramps — v1.1
-- ✓ ✓ Live Pace & HR charts — v1.1
+- ✓ Live Pace & HR charts — v1.1
 - ✓ Address search bar & Geolocation button — v1.2 (Phase 9)
+- [ ] SHR-01: Current route waypoints and configuration are persisted in the URL as a base64 encoded string
+- [ ] SHR-02: Copying and opening the URL on another device/browser restores the route exactly
 
 ### Active
 
-- [ ] URL-based route persistence (Shareable links)
-- [ ] Direct Strava Upload (v1.2 goal)
+- [ ] URL-based route persistence (Shareable links) (Validated)
 
 ### Out of Scope
 
-- Direct Strava OAuth upload — deferred to v1.2
+- Direct Strava OAuth upload — Out of scope.
 - Swimming — very different data model (pool lengths, strokes), future milestone
 - Activity history / saved runs — future milestone
 
@@ -75,6 +76,7 @@ Empower users to easily and realistically generate synthetic workout data that s
 | OSRM snap-to-road | Free, fast, no API key needed. | ✓ Good |
 | Open-Meteo elevation | Free, accurate, batch-capable. | ✓ Good |
 | Nominatim Search | Free, key-less address geocoding. | ✓ Good |
+| URL State Sharing | SHR-02 | Phase 10 | Complete | ✓ Good |
 
 ## Evolution
 

@@ -2,7 +2,8 @@
 
 import { useRouteStore } from "@/store/useRouteStore";
 import dynamic from "next/dynamic";
-import { Trash2, GripVertical, Footprints, PersonStanding, Bike, Mountain, ChevronDown, ChevronUp } from "lucide-react";
+import { Trash2, GripVertical, Footprints, PersonStanding, Bike, Mountain, ChevronDown, ChevronUp, Search, Navigation, Share2 } from "lucide-react";
+import { useState } from "react";
 
 const ActivityCharts = dynamic(() => import("./ActivityCharts"), { ssr: false });
 import {
@@ -106,7 +107,7 @@ function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; ind
 export default function Sidebar() {
   const { waypoints, reorderWaypoints, setConfig, startDate, startTime, timezoneOffset, paceMinutes, paceSeconds, useNoise, useSpeedUnit,
           snappedPath, generatedActivity, isGenerating, generateActivity,
-          activityType, setActivityType } = useRouteStore();
+          activityType, setActivityType, lastGeneratedAt } = useRouteStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -114,6 +115,59 @@ export default function Sidebar() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const flyTo = useRouteStore((state) => state.flyTo);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    setIsSearching(true);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1`,
+        {
+          headers: {
+            'User-Agent': 'StravaFakeRun/1.0',
+          },
+        }
+      );
+      const data = await response.json();
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0];
+        flyTo(parseFloat(lat), parseFloat(lon), 14);
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleLocate = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        flyTo(position.coords.latitude, position.coords.longitude, 16);
+      },
+      (error) => {
+        alert("Unable to retrieve your location: " + error.message);
+      }
+    );
+  };
+
+  const [copied, setCopied] = useState(false);
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -126,10 +180,33 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="w-full h-48 md:w-96 md:h-full bg-gray-50 flex flex-col border-b md:border-r border-gray-200">
+    <div className="w-full h-1/2 md:w-96 md:h-full bg-white flex flex-col border-b md:border-r border-gray-200 z-20 shadow-xl overflow-y-auto">
       <div className="p-4 bg-white border-b border-gray-200">
         <h1 className="text-xl font-bold text-gray-900">StravaFakeRun</h1>
         <p className="text-sm text-gray-500 mt-1">Plot your synthetic route</p>
+      </div>
+
+      <div className="p-4 bg-gray-100 border-b border-gray-200">
+        <form onSubmit={handleSearch} className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search location..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#FC4C02] focus:border-[#FC4C02]"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={handleLocate}
+            title="Go to current location"
+            className="p-1.5 bg-white border border-gray-300 rounded-md hover:bg-gray-50 text-gray-600 transition-colors"
+          >
+            <Navigation className="w-5 h-5" />
+          </button>
+        </form>
       </div>
 
       <div className="p-4 bg-gray-50 border-b border-gray-200">
@@ -275,19 +352,28 @@ export default function Sidebar() {
 
       <div className="p-4 bg-gray-50 border-b border-gray-200">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">Activity</h2>
-        <button
-          onClick={generateActivity}
-          disabled={snappedPath.length < 2 || isGenerating}
-          className="w-full py-2 px-4 bg-[#FC4C02] text-white text-sm font-medium rounded-md hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {isGenerating ? 'Generating...' : 'Generate Activity'}
-        </button>
+        <div className="space-y-2 mb-4">
+          <button
+            onClick={handleShare}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700 transition-colors shadow-sm"
+          >
+            <Share2 className="w-4 h-4 text-gray-400" />
+            {copied ? "Link Copied!" : "Share Route Link"}
+          </button>
+          <button
+            onClick={generateActivity}
+            disabled={snappedPath.length < 2 || isGenerating}
+            className="w-full py-2 px-4 bg-[#FC4C02] text-white text-sm font-medium rounded-md hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {isGenerating ? 'Generating...' : 'Generate Activity'}
+          </button>
+        </div>
         {generatedActivity && (
           <div className="mt-4 border-t pt-4">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Preview Charts</span>
             </div>
-            <ActivityCharts data={generatedActivity} />
+            <ActivityCharts key={lastGeneratedAt} data={generatedActivity} />
           </div>
         )}
         {generatedActivity !== null && generatedActivity.length > 0 && (
@@ -316,7 +402,7 @@ export default function Sidebar() {
         )}
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="p-4">
         {waypoints.length === 0 ? (
           <div className="text-center mt-12 p-6">
             <h2 className="text-lg font-semibold text-gray-900">No waypoints yet.</h2>

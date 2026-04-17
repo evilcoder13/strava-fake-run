@@ -27,7 +27,7 @@ type RouteConfig = Pick<RouteState,
   'startDate' | 'startTime' | 'timezoneOffset' | 'paceMinutes' | 'paceSeconds' | 'useNoise' | 'useSpeedUnit' | 'activityType'
 >;
 
-interface RouteState {
+export interface RouteState {
   waypoints: Waypoint[];
   snappedPath: [number, number][];
   startDate: string;
@@ -48,6 +48,11 @@ interface RouteState {
   generatedActivity: ActivityPoint[] | null;
   isGenerating: boolean;
   generateActivity: () => Promise<void>;
+  mapCenter: [number, number] | null;
+  mapZoom: number | null;
+  lastGeneratedAt: number | null;
+  flyTo: (lat: number, lng: number, zoom?: number) => void;
+  loadFromState: (partialState: Partial<RouteState>) => void;
 }
 
 export const useRouteStore = create<RouteState>((set) => ({
@@ -63,6 +68,21 @@ export const useRouteStore = create<RouteState>((set) => ({
   activityType: ActivityType.Running,
   generatedActivity: null,
   isGenerating: false,
+  mapCenter: null,
+  mapZoom: null,
+  lastGeneratedAt: null,
+
+  flyTo: (lat: number, lng: number, zoom: number = 13) => {
+    set({ mapCenter: [lat, lng], mapZoom: zoom });
+    // Reset after a tick to allow re-triggering the same location if needed
+    setTimeout(() => {
+      set({ mapCenter: null, mapZoom: null });
+    }, 100);
+  },
+
+  loadFromState: (partialState: Partial<RouteState>) => {
+    set((state) => ({ ...state, ...partialState }));
+  },
 
   addWaypoint: (lat: number, lng: number) => {
     const id = Date.now().toString() + Math.random().toString(36).substring(2, 9);
@@ -195,7 +215,7 @@ export const useRouteStore = create<RouteState>((set) => ({
         };
       });
 
-      set({ generatedActivity: activity, isGenerating: false });
+      set({ generatedActivity: activity, isGenerating: false, lastGeneratedAt: Date.now() });
     } catch (error) {
       console.error('Failed to generate activity:', error);
       set({ isGenerating: false });
