@@ -2,8 +2,6 @@
 
 **StravaFakeRun** is a premium, privacy-first web utility designed to help athletes and developers generate realistic synthetic workout data. Whether you need to simulate a route for testing, restore a lost activity, or experiment with biometric models, StravaFakeRun provides the tools to create "human-feeling" GPX and TCX files that look authentic on platforms like Strava.
 
-![StravaFakeRun Preview](https://raw.githubusercontent.com/evilcoder13/stravafakerun/main/public/preview.png) *(Note: Add your own screenshot path here)*
-
 ## ✨ Features
 
 - **🗺️ Interactive Map Plotting**: Click to add waypoints; our OSRM integration automatically snaps your route to the nearest roads and trails.
@@ -70,6 +68,14 @@ Contributions are what make the open-source community such an amazing place to l
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## 🗺️ Map Data & Precision Disclaimer
+
+StravaFakeRun uses map data provided by **[OpenStreetMap](https://www.openstreetmap.org/)** and routing services from **[OSRM](http://project-osrm.org/)**. Please be aware:
+
+- **Data Ownership**: All map tiles and geographic data are property of OpenStreetMap contributors.
+- **Precision**: Map data, road snapping, and elevation profiles are provided for simulation purposes only. They may not reflect real-world conditions, current road closures, or exact GPS precision.
+- **Content**: The developers of StravaFakeRun do not control the accuracy or completeness of the underlying map content.
 
 ## ☕ Support
 
