@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouteStore } from "@/store/useRouteStore";
-import { Trash2, GripVertical } from "lucide-react";
+import { Trash2, GripVertical, Footprints, PersonStanding, Bike, Mountain } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -23,6 +23,17 @@ import { type Waypoint } from "@/store/useRouteStore";
 
 import { exportGPX } from "@/lib/export/gpx";
 import { exportTCX } from "@/lib/export/tcx";
+import { ActivityType } from "@/lib/types/activity";
+import { SPORT_PROFILES } from "@/lib/sport-profiles";
+import type { LucideIcon } from "lucide-react";
+
+// Activity type selector options
+const ACTIVITY_OPTIONS: { type: ActivityType; label: string; icon: LucideIcon }[] = [
+  { type: ActivityType.Running, label: 'Run',   icon: Footprints },
+  { type: ActivityType.Walking, label: 'Walk',  icon: PersonStanding },
+  { type: ActivityType.Cycling, label: 'Cycle', icon: Bike },
+  { type: ActivityType.Hiking,  label: 'Hike',  icon: Mountain },
+];
 
 // Sub-component for individual waypoint items
 function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; index: number }) {
@@ -77,7 +88,8 @@ function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; ind
 
 export default function Sidebar() {
   const { waypoints, reorderWaypoints, setConfig, startDate, startTime, paceMinutes, paceSeconds, useNoise,
-          snappedPath, generatedActivity, isGenerating, generateActivity } = useRouteStore();
+          snappedPath, generatedActivity, isGenerating, generateActivity,
+          activityType, setActivityType } = useRouteStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -158,6 +170,40 @@ export default function Sidebar() {
         </div>
       </div>
 
+      {/* Activity Type Selector */}
+      <div className="px-4 pt-4 pb-2 bg-gray-50 border-b border-gray-200">
+        <p className="text-xs font-medium text-zinc-400 mb-2">Activity Type</p>
+        <div
+          role="radiogroup"
+          aria-label="Select activity type"
+          className="grid grid-cols-2 gap-2 p-1 bg-zinc-900 rounded-xl"
+        >
+          {ACTIVITY_OPTIONS.map(({ type, label, icon: Icon }) => {
+            const isActive = activityType === type;
+            return (
+              <button
+                key={type}
+                role="radio"
+                aria-checked={isActive}
+                aria-label={type}
+                title={type}
+                onClick={() => setActivityType(type)}
+                className={[
+                  'flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-lg',
+                  'text-xs font-medium transition-colors duration-150 ease-in-out cursor-pointer',
+                  isActive
+                    ? 'bg-[#FC4C02] text-white shadow-md'
+                    : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200',
+                ].join(' ')}
+              >
+                <Icon size={16} />
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="p-4 bg-gray-50 border-b border-gray-200">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">Activity</h2>
         <button
@@ -171,16 +217,19 @@ export default function Sidebar() {
           <div className="mt-4 space-y-2">
             <p className="text-xs text-gray-500 text-center mb-2">
               {generatedActivity.length} points generated
+              <span className="ml-2 text-zinc-400">
+                · {SPORT_PROFILES[activityType].cadence.unit}
+              </span>
             </p>
             <div className="flex gap-2">
               <button
-                onClick={() => exportGPX(generatedActivity)}
+                onClick={() => exportGPX(generatedActivity, activityType)}
                 className="flex-1 py-2 px-2 bg-gray-800 text-white text-xs font-medium rounded-md hover:bg-gray-900 transition-colors"
               >
                 Download GPX
               </button>
               <button
-                onClick={() => exportTCX(generatedActivity)}
+                onClick={() => exportTCX(generatedActivity, activityType)}
                 className="flex-1 py-2 px-2 bg-gray-800 text-white text-xs font-medium rounded-md hover:bg-gray-900 transition-colors"
               >
                 Download TCX

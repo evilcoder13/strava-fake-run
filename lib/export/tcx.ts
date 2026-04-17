@@ -1,7 +1,9 @@
 import { create } from 'xmlbuilder2';
 import type { ActivityPoint } from '../types/activity';
+import { ActivityType } from '../types/activity';
+import { SPORT_PROFILES } from '../sport-profiles';
 
-export function exportTCX(points: ActivityPoint[]) {
+export function exportTCX(points: ActivityPoint[], activityType: ActivityType = ActivityType.Running) {
   if (!points || points.length === 0) return;
 
   const startTime = points[0].timestamp;
@@ -12,6 +14,7 @@ export function exportTCX(points: ActivityPoint[]) {
   const d1 = new Date(points[0].timestamp);
   const d2 = new Date(points[points.length - 1].timestamp);
   const totalSeconds = (d2.getTime() - d1.getTime()) / 1000;
+  const profile = SPORT_PROFILES[activityType];
 
   const root = create({ version: '1.0', encoding: 'UTF-8' })
     .ele('TrainingCenterDatabase', {
@@ -22,7 +25,7 @@ export function exportTCX(points: ActivityPoint[]) {
     });
 
   const activities = root.ele('Activities');
-  const activity = activities.ele('Activity', { Sport: 'Running' });
+  const activity = activities.ele('Activity', { Sport: profile.tcxSport });
   
   activity.ele('Id').txt(startTime);
 
@@ -72,7 +75,7 @@ export function exportTCX(points: ActivityPoint[]) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'fake-run.tcx';
+  a.download = `fake-${profile.gpxType}.tcx`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

@@ -1,7 +1,9 @@
 import { create } from 'xmlbuilder2';
 import type { ActivityPoint } from '../types/activity';
+import { ActivityType } from '../types/activity';
+import { SPORT_PROFILES } from '../sport-profiles';
 
-export function exportGPX(points: ActivityPoint[]) {
+export function exportGPX(points: ActivityPoint[], activityType: ActivityType = ActivityType.Running) {
   if (!points || points.length === 0) return;
 
   const root = create({ version: '1.0', encoding: 'UTF-8' })
@@ -15,7 +17,9 @@ export function exportGPX(points: ActivityPoint[]) {
     });
 
   const trk = root.ele('trk');
-  trk.ele('name').txt('Fake Run');
+  const profile = SPORT_PROFILES[activityType];
+  trk.ele('name').txt(`Fake ${activityType}`);
+  trk.ele('type').txt(profile.gpxType);
   const trkseg = trk.ele('trkseg');
 
   points.forEach((p) => {
@@ -49,7 +53,7 @@ export function exportGPX(points: ActivityPoint[]) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'fake-run.gpx';
+  a.download = `fake-${profile.gpxType}.gpx`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
