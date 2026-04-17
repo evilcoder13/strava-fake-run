@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import type { ActivityPoint } from '@/lib/types/activity';
+import { interpolatePath } from '@/lib/route-interpolator';
 
 export interface Waypoint {
   id: string;
@@ -20,6 +22,9 @@ interface RouteState {
   moveWaypoint: (id: string, lat: number, lng: number) => void;
   fetchSnappedPath: () => Promise<void>;
   setConfig: (config: Partial<RouteState>) => void;
+  generatedActivity: ActivityPoint[] | null;
+  isGenerating: boolean;
+  generateActivity: () => Promise<void>;
 }
 
 export const useRouteStore = create<RouteState>((set) => ({
@@ -30,6 +35,8 @@ export const useRouteStore = create<RouteState>((set) => ({
   paceMinutes: 5,
   paceSeconds: 30,
   useNoise: false,
+  generatedActivity: null,
+  isGenerating: false,
 
   addWaypoint: (lat: number, lng: number) => {
     const id = Date.now().toString() + Math.random().toString(36).substring(2, 9);
@@ -67,6 +74,39 @@ export const useRouteStore = create<RouteState>((set) => ({
 
   setConfig: (config: Partial<RouteState>) => {
     set(config);
+  },
+
+  generateActivity: async () => {
+    const state = useRouteStore.getState();
+    if (state.snappedPath.length < 2) return;
+    set({ isGenerating: true });
+    try {
+      const points = interpolatePath({
+        snappedPath: state.snappedPath,
+        startDate: state.startDate,
+        startTime: state.startTime,
+        paceMinutes: state.paceMinutes,
+        paceSeconds: state.paceSeconds,
+        useNoise: state.useNoise,
+        intervalSeconds: 10,
+      });
+      // Plan 02 will merge HR, cadence, elevation onto points.
+      // For now store as ActivityPoint[] with placeholder biometrics (heartRate: 0, cadence: 0, elevation: 0).
+      // Plan 02 replaces this stub with full biometric computation.
+      const activity: ActivityPoint[] = points.map(p => ({
+        lat: p.lat,
+        lon: p.lon,
+        timestamp: p.timestamp,
+        distFromStartKm: p.distFromStartKm,
+        heartRate: 0,    // placeholder — Plan 02 fills this
+        cadence: 0,      // placeholder — Plan 02 fills this
+        elevation: 0,    // placeholder — Plan 02 fills this
+      }));
+      set({ generatedActivity: activity, isGenerating: false });
+    } catch (error) {
+      console.error('Failed to generate activity:', error);
+      set({ isGenerating: false });
+    }
   },
 
   fetchSnappedPath: async () => {
