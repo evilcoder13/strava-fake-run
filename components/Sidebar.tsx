@@ -21,6 +21,8 @@ import { CSS } from "@dnd-kit/utilities";
 
 import { type Waypoint } from "@/store/useRouteStore";
 
+import { exportGPX } from "@/lib/export/gpx";
+
 // Sub-component for individual waypoint items
 function SortableWaypointItem({ id, wp, index }: { id: string; wp: Waypoint; index: number }) {
   const {
@@ -164,10 +166,18 @@ export default function Sidebar() {
         >
           {isGenerating ? 'Generating...' : 'Generate Activity'}
         </button>
-        {generatedActivity !== null && (
-          <p className="text-xs text-gray-500 mt-2">
-            {generatedActivity.length} points generated
-          </p>
+        {generatedActivity !== null && generatedActivity.length > 0 && (
+          <div className="mt-4 space-y-2">
+            <p className="text-xs text-gray-500">
+              {generatedActivity.length} points generated
+            </p>
+            <button
+              onClick={() => exportGPX(generatedActivity)}
+              className="w-full py-2 px-4 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition-colors"
+            >
+              Download GPX
+            </button>
+          </div>
         )}
       </div>
 

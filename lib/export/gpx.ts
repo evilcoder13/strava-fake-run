@@ -1,0 +1,57 @@
+import { create } from 'xmlbuilder2';
+import type { ActivityPoint } from '../types/activity';
+
+export function exportGPX(points: ActivityPoint[]) {
+  if (!points || points.length === 0) return;
+
+  const root = create({ version: '1.0', encoding: 'UTF-8' })
+    .ele('gpx', {
+      creator: 'StravaFakeRun',
+      version: '1.1',
+      xmlns: 'http://www.topografix.com/GPX/1/1',
+      'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+      'xsi:schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd',
+      'xmlns:gpxtpx': 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1'
+    });
+
+  const trk = root.ele('trk');
+  trk.ele('name').txt('Fake Run');
+  const trkseg = trk.ele('trkseg');
+
+  points.forEach((p) => {
+    const trkpt = trkseg.ele('trkpt', { lat: p.lat.toString(), lon: p.lon.toString() });
+    
+    if (p.elevation !== undefined) {
+      trkpt.ele('ele').txt(p.elevation.toString());
+    }
+    
+    trkpt.ele('time').txt(p.timestamp);
+
+    // Optional biometric extensions
+    if (p.heartRate !== undefined || p.cadence !== undefined) {
+      const extensions = trkpt.ele('extensions');
+      const tpx = extensions.ele('gpxtpx:TrackPointExtension');
+      
+      if (p.heartRate !== undefined) {
+        tpx.ele('gpxtpx:hr').txt(Math.round(p.heartRate).toString());
+      }
+      
+      if (p.cadence !== undefined) {
+        tpx.ele('gpxtpx:cad').txt(Math.round(p.cadence).toString());
+      }
+    }
+  });
+
+  const xmlString = root.end({ prettyPrint: true });
+  
+  // Trigger download
+  const blob = new Blob([xmlString], { type: 'application/gpx+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'fake-run.gpx';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
