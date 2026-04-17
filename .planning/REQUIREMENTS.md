@@ -21,9 +21,9 @@
 
 ### Biometric Simulation
 
-- [ ] **BIO-01**: Application can generate a baseline simulated heart rate curve
-- [ ] **BIO-02**: Application can generate running cadence corresponding to the chosen pace
-- [ ] **BIO-03**: (Optional initially, high priority) Application fetches real-world elevation profiles for the route points
+- [x] **BIO-01**: Application can generate a baseline simulated heart rate curve
+- [x] **BIO-02**: Application can generate running cadence corresponding to the chosen pace
+- [x] **BIO-03**: (Optional initially, high priority) Application fetches real-world elevation profiles for the route points
 
 ### Export & Output
 
@@ -57,9 +57,9 @@
 | CFG-02 | Phase 2 | Pending |
 | CFG-03 | Phase 2 | Pending |
 | CFG-04 | Phase 3 | Complete |
-| BIO-01 | Phase 3 | Pending |
-| BIO-02 | Phase 3 | Pending |
-| BIO-03 | Phase 3 | Pending |
+| BIO-01 | Phase 3 | Complete |
+| BIO-02 | Phase 3 | Complete |
+| BIO-03 | Phase 3 | Complete |
 | OUT-01 | Phase 4 | Pending |
 | OUT-02 | Phase 4 | Pending |
 
