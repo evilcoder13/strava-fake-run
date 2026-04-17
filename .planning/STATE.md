@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Realism & Activity Types
-current_phase: 7
+current_phase: 8
 status: Complete
-stopped_at: Phase 06 Configuration UX complete
-last_updated: "2026-04-17T08:55:00.000Z"
+stopped_at: Phase 07 Enhanced Simulation complete
+last_updated: "2026-04-17T08:57:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  completed_phases: 3
+  total_plans: 6
+  completed_plans: 6
 ---
 
 # Project State
@@ -20,12 +20,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Empower users to easily and realistically generate synthetic workout data that seamlessly uploads to Strava without looking fake.
-**Current Focus:** Phase 07 — Enhanced Simulation
-**Current Phase:** 7
-**Last session:** 2026-04-17T08:55:00.000Z
-**Stopped at:** Phase 06 Configuration UX complete
+**Current Focus:** Phase 08 — Data Preview Charts
+**Current Phase:** 8
+**Last session:** 2026-04-17T08:57:00.000Z
+**Stopped at:** Phase 07 Enhanced Simulation complete
 
-[▓▓▓▓▓░░░░░] 50% (2/4 phases)
+[▓▓▓▓▓▓▓▓░░] 75% (3/4 phases)
 
 ## Recent Actions
 
@@ -33,6 +33,7 @@ See: .planning/PROJECT.md (updated 2026-04-17)
 - 2026-04-17: v1.1 milestone started — 12 requirements, 4 phases, 8 plans.
 - 2026-04-17: Phase 5 (Activity Type System) completed. Sport selector & bios implemented.
 - 2026-04-17: Phase 6 (Configuration UX) completed. Timezone & Pace/Speed toggle implemented.
+- 2026-04-17: Phase 7 (Enhanced Simulation) completed. Gradient response, GPS noise, and cool-down implemented.
 
 ## Decisions
 

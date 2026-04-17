@@ -20,8 +20,8 @@
 ### 🚧 v1.1 Realism & Activity Types (In Progress)
 
 - [x] **Phase 5: Activity Type System** — Sport selector with per-type biometric profiles and Strava sport encoding
-- [x] **Phase 6: Configuration UX** — Timezone picker and pace unit toggle
-- [ ] **Phase 7: Enhanced Simulation** — Gradient-responsive cadence/HR, GPS noise, warm-up/cool-down curves
+- [x] **Phase 7: Enhanced Simulation** — Gradient-responsive cadence/HR, GPS noise, warm-up/cool-down curves
+- [ ] **Phase 8: Data Preview Charts** — Pace and HR charts rendered before export
 - [ ] **Phase 8: Data Preview Charts** — Pace and HR charts rendered before export
 
 ## Phase Details
@@ -67,8 +67,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: Gradient-aware cadence and HR modifiers; warm-up/cool-down ramp logic in biometric-simulator
-- [ ] 07-02: GPS noise layer — apply Gaussian coordinate perturbation to each ActivityPoint
+- [x] 07-01: Gradient-aware cadence and HR modifiers; warm-up/cool-down ramp logic in biometric-simulator
+- [x] 07-02: GPS noise layer — apply Gaussian coordinate perturbation to each ActivityPoint
 
 ### Phase 8: Data Preview Charts
 **Goal**: Show user a pace and HR chart after generation so they can review before downloading.
@@ -96,5 +96,5 @@ Plans:
 | 4. Export Engine | v1.0 | 2/2 | Complete | 2026-04-17 |
 | 5. Activity Type System | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 6. Configuration UX | v1.1 | 2/2 | Complete | 2026-04-17 |
-| 7. Enhanced Simulation | v1.1 | 0/2 | Not started | - |
+| 7. Enhanced Simulation | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 8. Data Preview Charts | v1.1 | 0/2 | Not started | - |
