@@ -42,17 +42,15 @@ export const useRouteStore = create<RouteState>((set) => ({
 
   addWaypoint: (lat: number, lng: number) => {
     const id = Date.now().toString() + Math.random().toString(36).substring(2, 9);
-    set((state) => {
-      state.fetchSnappedPath();
-      return { waypoints: [...state.waypoints, { id, lat, lng }] };
-    });
+    set((state) => ({ waypoints: [...state.waypoints, { id, lat, lng }] }));
+    // fetchSnappedPath reads getState() — call after set() commits the new waypoints
+    useRouteStore.getState().fetchSnappedPath();
   },
 
   removeWaypoint: (id: string) => {
-    set((state) => {
-      state.fetchSnappedPath();
-      return { waypoints: state.waypoints.filter((wp) => wp.id !== id) };
-    });
+    set((state) => ({ waypoints: state.waypoints.filter((wp) => wp.id !== id) }));
+    // fetchSnappedPath reads getState() — call after set() commits the removal
+    useRouteStore.getState().fetchSnappedPath();
   },
 
   reorderWaypoints: (oldIndex: number, newIndex: number) => {
@@ -60,18 +58,20 @@ export const useRouteStore = create<RouteState>((set) => ({
       const newWaypoints = [...state.waypoints];
       const [movedItem] = newWaypoints.splice(oldIndex, 1);
       newWaypoints.splice(newIndex, 0, movedItem);
-      state.fetchSnappedPath();
       return { waypoints: newWaypoints };
     });
+    // fetchSnappedPath reads getState() — call after set() commits the reorder
+    useRouteStore.getState().fetchSnappedPath();
   },
 
   moveWaypoint: (id: string, lat: number, lng: number) => {
-    set((state) => {
-      state.fetchSnappedPath();
-      return { waypoints: state.waypoints.map((wp) =>
+    set((state) => ({
+      waypoints: state.waypoints.map((wp) =>
         wp.id === id ? { ...wp, lat, lng } : wp
-      )};
-    });
+      ),
+    }));
+    // fetchSnappedPath reads getState() — call after set() commits the move
+    useRouteStore.getState().fetchSnappedPath();
   },
 
   setConfig: (config: Partial<RouteState>) => {
