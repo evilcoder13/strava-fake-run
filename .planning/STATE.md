@@ -1,53 +1,36 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Realism & Activity Types
-current_phase: 8
-status: SHIPPED
-stopped_at: Milestone v1.1 Realism & Activity Types complete
-last_updated: "2026-04-17T09:00:00.000Z"
+milestone: v1.2
+milestone_name: Map Utilities & Sharing
+current_phase: 9
+status: In Progress
+stopped_at: Milestone v1.1 SHIPPED. Starting v1.2.
+last_updated: "2026-04-17T09:07:30.000Z"
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 8
-  completed_plans: 8
+  total_phases: 3
+  completed_phases: 0
+  total_plans: 5
+  completed_plans: 0
 ---
 
 # Project State
 
-## Project Reference
-
+## Context
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Empower users to easily and realistically generate synthetic workout data that seamlessly uploads to Strava without looking fake.
-**Current Focus:** Milestone v1.1 Complete
-**Current Phase:** 8
+**Current Focus:** Phase 09 — Map Navigation Utilities
+**Current Phase:** 9
 **Last session:** 2026-04-17T09:00:00.000Z
-**Stopped at:** Milestone v1.1 Realism & Activity Types complete
+**Stopped at:** Milestone v1.1 complete.
 
-[▓▓▓▓▓▓▓▓▓▓] 100% (4/4 phases)
+[░░░░░░░░░░] 0% (0/3 phases)
 
 ## Recent Actions
 
-- 2026-04-17: v1.0 MVP complete and tagged. All 13 requirements shipped.
-- 2026-04-17: v1.1 milestone started — 12 requirements, 4 phases, 8 plans.
-- 2026-04-17: Phase 5 (Activity Type System) completed. Sport selector & bios implemented.
-- 2026-04-17: Phase 6 (Configuration UX) completed. Timezone & Pace/Speed toggle implemented.
-- 2026-04-17: Phase 7 (Enhanced Simulation) completed. Gradient response, GPS noise, and cool-down implemented.
-- 2026-04-17: Phase 8 (Data Preview Charts) completed. Recharts integration for HR/Pace visual review. v1.1 SHIPPED.
+- 2026-04-17: Milestone v1.1 SHIPPED.
+- 2026-04-17: Milestone v1.2 started. Planning Phase 9.
 
 ## Decisions
 
-| Phase | Decision |
-|-------|----------|
-| 03-01 | Coordinate flip [lat,lon] → [lon,lat] handled inside interpolatePath; mirrors inverse of OSRM flip in store line 98 |
-| 03-01 | gaussianRandom uses Box-Muller transform and is not exported — pure internal utility |
-| 03-02 | Karvonen zone fix: paceSecPerKm <=330 for Z3 so 5:30/km maps correctly to 0.75 HRR fraction |
-| 03-02 | Elevation API errors fall back to 0m array (inner catch) — pipeline never fails due to elevation API outage |
-
-## Performance Metrics
-
-| Phase | Plan | Duration | Tasks | Files |
-|-------|------|----------|-------|-------|
-| 03 | 01 | 15 min | 3 | 9 |
-| 03 | 02 | - | 3 | 4 |
+- (v1.2) Using Nominatim (OSM) for free address geocoding to keep the app key-less.

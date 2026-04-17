@@ -8,19 +8,17 @@ StravaFakeRun is a web application that allows users to generate realistic, synt
 
 Empower users to easily and realistically generate synthetic workout data that seamlessly uploads to Strava without looking fake.
 
-## Current Milestone: v1.1 Realism & Activity Types
+- ✓ **v1.1 Realism & Activity Types** — Phases 5-8 (shipped 2026-04-17)
 
-**Goal:** Expand activity variety and improve the believability of generated data through smarter simulation and accurate timezone/unit handling.
+## Current Milestone: v1.2 Map Utilities & Sharing
+
+**Goal:** Enhance map navigation and usability with search, geolocation, and route sharing.
 
 **Target features:**
-- Activity Type Selector (Running, Walking, Cycling, Hiking) with sport-specific biometric profiles
-- Timezone (GMT) picker so exported timestamps use the correct UTC offset for Strava
-- Pace unit toggle — min/km ↔ km/h with live conversion
-- Variable cadence on hills (gradient-responsive)
-- Elevation-responsive HR spikes at climbs
-- GPS positional noise — subtle coordinate drift per trackpoint
-- Warm-up / cool-down HR and pace curves (first/last ~5%)
-- Pace & HR data chart — preview before exporting
+- Address search on the map via Nominatim geocoder
+- "Locate Me" button to fly to current GPS position
+- URL State Sharing — share routes via base64 encoded URL parameters
+- Strava OAuth — direct upload support (TBD)
 
 ## Requirements
 
@@ -35,17 +33,19 @@ Empower users to easily and realistically generate synthetic workout data that s
 - ✓ Simulate running cadence corresponding to pace — v1.0
 - ✓ Export generated activity as `.gpx` — v1.0
 - ✓ Export generated activity as `.tcx` — v1.0
+- ✓ Activity type selection (Run/Walk/Cycle/Hike) — v1.1
+- ✓ Timezone/UTC offset support — v1.1
+- ✓ Pace/Speed unit toggle — v1.1
+- ✓ Gradient-responsive cadence & HR — v1.1
+- ✓ GPS noise & biometric ramps — v1.1
+- ✓ Live Pace & HR charts — v1.1
 
 ### Active
 
-- [ ] Activity type selection (Running, Walking, Cycling, Hiking)
-- [ ] Timezone (GMT offset) selector with correct UTC export timestamps
-- [ ] Pace unit toggle (min/km ↔ km/h) in the UI
-- [ ] Gradient-responsive cadence simulation
-- [ ] Elevation-responsive HR spikes
-- [ ] GPS positional noise
-- [ ] Warm-up / cool-down biometric curves
-- [ ] Pace & HR data chart preview
+- [ ] Address search bar (Nominatim integration)
+- [ ] Geolocation "Fly to Me" button
+- [ ] URL-based route persistence (Shareable links)
+- [ ] Direct Strava Upload (v1.2 goal)
 
 ### Out of Scope
 
