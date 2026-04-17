@@ -38,11 +38,11 @@ created: 2026-04-17
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 03-01-01 | 01 | 1 | CFG-04 | T-03-01 | N/A | unit | `vitest run src/lib/route-interpolator.test.ts` | ✅ W0 | ⬜ pending |
-| 03-01-02 | 01 | 1 | CFG-04 | — | N/A | unit | `vitest run src/lib/route-interpolator.test.ts` | ✅ W0 | ⬜ pending |
-| 03-02-01 | 02 | 1 | BIO-01 | — | N/A | unit | `vitest run src/lib/biometric-simulator.test.ts` | ✅ W0 | ⬜ pending |
-| 03-02-02 | 02 | 1 | BIO-02 | — | N/A | unit | `vitest run src/lib/biometric-simulator.test.ts` | ✅ W0 | ⬜ pending |
-| 03-02-03 | 02 | 1 | BIO-03 | — | N/A | unit | `vitest run src/lib/elevation-simulator.test.ts` | ✅ W0 | ⬜ pending |
+| 03-01-01 | 01 | 1 | CFG-04 | T-03-01 | N/A | unit | `npx vitest run lib/__tests__/route-interpolator.test.ts --reporter=verbose` | ✅ W0 | ⬜ pending |
+| 03-01-02 | 01 | 1 | CFG-04 | — | N/A | unit | `npx vitest run lib/__tests__/route-interpolator.test.ts --reporter=verbose` | ✅ W0 | ⬜ pending |
+| 03-02-01 | 02 | 1 | BIO-01 | — | N/A | unit | `npx vitest run lib/__tests__/biometric-simulator.test.ts --reporter=verbose` | ✅ W0 | ⬜ pending |
+| 03-02-02 | 02 | 1 | BIO-02 | — | N/A | unit | `npx vitest run lib/__tests__/biometric-simulator.test.ts --reporter=verbose` | ✅ W0 | ⬜ pending |
+| 03-02-03 | 02 | 1 | BIO-03 | — | N/A | unit | `npx vitest run lib/__tests__/elevation-simulator.test.ts --reporter=verbose` | ✅ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -52,9 +52,9 @@ created: 2026-04-17
 
 - [ ] `vitest` added to `devDependencies` (`npm install --save-dev vitest`)
 - [ ] `vitest.config.ts` created in project root
-- [ ] `src/lib/route-interpolator.test.ts` — stubs for CFG-04 (temporal path distancer)
-- [ ] `src/lib/biometric-simulator.test.ts` — stubs for BIO-01 (HR curve), BIO-02 (cadence)
-- [ ] `src/lib/elevation-simulator.test.ts` — stubs for BIO-03 (elevation profile)
+- [ ] `lib/__tests__/route-interpolator.test.ts` — stubs for CFG-04 (temporal path distancer)
+- [ ] `lib/__tests__/biometric-simulator.test.ts` — stubs for BIO-01 (HR curve), BIO-02 (cadence)
+- [ ] `lib/__tests__/elevation-simulator.test.ts` — stubs for BIO-03 (elevation profile)
 
 *Wave 0 must complete BEFORE any plan task begins — tests drive the implementation.*
 
