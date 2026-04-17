@@ -2,51 +2,79 @@
 
 ## What This Is
 
-StravaFakeRun is a web application clone of `fakemy.run` that allows users to seamlessly generate realistic, synthetic workout log files (such as GPX, TCX, or FIT formats). It allows athletes to manually craft activities with granular control over metrics—such as distance, pace, elevation, and biometric data (heart rate, cadence)—allowing them to log activities they might have lost data for, or for testing fitness applications.
+StravaFakeRun is a web application that allows users to generate realistic, synthetic workout log files (GPX, TCX). Athletes have granular control over metrics—distance, pace, elevation and biometric data (heart rate, cadence)—allowing them to log activities they might have lost data for, or for testing fitness applications.
 
 ## Core Value
 
 Empower users to easily and realistically generate synthetic workout data that seamlessly uploads to Strava without looking fake.
 
+## Current Milestone: v1.1 Realism & Activity Types
+
+**Goal:** Expand activity variety and improve the believability of generated data through smarter simulation and accurate timezone/unit handling.
+
+**Target features:**
+- Activity Type Selector (Running, Walking, Cycling, Hiking) with sport-specific biometric profiles
+- Timezone (GMT) picker so exported timestamps use the correct UTC offset for Strava
+- Pace unit toggle — min/km ↔ km/h with live conversion
+- Variable cadence on hills (gradient-responsive)
+- Elevation-responsive HR spikes at climbs
+- GPS positional noise — subtle coordinate drift per trackpoint
+- Warm-up / cool-down HR and pace curves (first/last ~5%)
+- Pace & HR data chart — preview before exporting
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Interactive map interface to draw routes (Leaflet) — v1.0
+- ✓ Snap-to-road functionality (OSRM) — v1.0
+- ✓ Set exact start date and time of the activity — v1.0
+- ✓ Define average pace with dynamic variability — v1.0
+- ✓ Real elevation profile fetching (Open-Meteo) — v1.0
+- ✓ Simulate heart rate curve (Karvonen) — v1.0
+- ✓ Simulate running cadence corresponding to pace — v1.0
+- ✓ Export generated activity as `.gpx` — v1.0
+- ✓ Export generated activity as `.tcx` — v1.0
 
 ### Active
 
-- [ ] Interactive map interface to draw, upload, or modify routes (using Leaflet/Mapbox).
-- [ ] Snap-to-road functionality for drawing realistic routes.
-- [ ] Set exact start date and time of the activity.
-- [ ] Define average pace with dynamic variability to enhance realism.
-- [ ] Real elevation profile fetching or continuous elevation gain simulation.
-- [ ] Simulate heart rate curve that scales with pace and elevation.
-- [ ] Simulate running cadence corresponding to the chosen pace.
-- [ ] Export generated activity as `.gpx` format.
-- [ ] Export generated activity as `.tcx` format.
+- [ ] Activity type selection (Running, Walking, Cycling, Hiking)
+- [ ] Timezone (GMT offset) selector with correct UTC export timestamps
+- [ ] Pace unit toggle (min/km ↔ km/h) in the UI
+- [ ] Gradient-responsive cadence simulation
+- [ ] Elevation-responsive HR spikes
+- [ ] GPS positional noise
+- [ ] Warm-up / cool-down biometric curves
+- [ ] Pace & HR data chart preview
 
 ### Out of Scope
 
-- Direct API integration with Strava to upload the activity — deferred to future milestone, focus first is on file export.
+- Direct Strava OAuth upload — deferred to v1.2
+- Swimming — very different data model (pool lengths, strokes), future milestone
+- Activity history / saved runs — future milestone
 
 ## Context
 
-- **Environment**: Next.js / React with Tailwind CSS.
-- **Mapping context**: Requires integrations with mapping providers like OpenStreetMap/Overpass API for routing and Open Topo Data for elevation.
-- **Domain**: Fitness tracking data structures (GPX/TCX/FIT schemas) and geospatial analysis.
+- **Environment**: Next.js / React with Tailwind CSS, Zustand state, xmlbuilder2 exports.
+- **Codebase state (v1.0)**: ~1,200 LOC TypeScript/TSX. Core libs: `lib/route-interpolator.ts`, `lib/biometric-simulator.ts`, `lib/elevation-simulator.ts`, `lib/export/gpx.ts`, `lib/export/tcx.ts`.
+- **Data contract**: `ActivityPoint` in `lib/types/activity.ts` — lat, lon, elevation, timestamp, heartRate, cadence, distFromStartKm.
+- **Domain**: Fitness tracking data structures (GPX/TCX schemas) and geospatial analysis.
 
 ## Constraints
 
 - **Tech Stack**: Next.js/React — standardizing on modern React architecture.
 - **Aesthetic**: Clean, premium, sporty UI aesthetic with Tailwind CSS.
+- **Client-side only**: No backend/DB — privacy and free hosting.
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Next.js & React | Best ecosystem for rapid modern web app creation. | — Pending |
-| Local file generation | Faster MVP than integrating full Strava OAuth for direct upload. | — Pending |
+| Next.js & React | Best ecosystem for rapid modern web app creation. | ✓ Good |
+| Local file generation | Faster MVP than integrating full Strava OAuth for direct upload. | ✓ Good |
+| xmlbuilder2 for XML | Structural safety over manual string concatenation. | ✓ Good |
+| OSRM snap-to-road | Free, fast, no API key needed. | ✓ Good |
+| Open-Meteo elevation | Free, accurate, batch-capable. | ✓ Good |
 
 ## Evolution
 
@@ -66,4 +94,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-16 after initialization*
+*Last updated: 2026-04-17 after v1.0 milestone — starting v1.1*

@@ -1,40 +1,40 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-current_phase: 4
-status: v1.0 milestone complete
-stopped_at: Phase 04 UI-SPEC approved
-last_updated: "2026-04-17T07:56:30.201Z"
+milestone: v1.1
+milestone_name: Realism & Activity Types
+current_phase: 5
+status: Defining requirements
+stopped_at: Milestone v1.1 started
+last_updated: "2026-04-17T08:12:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 4
-  total_plans: 9
-  completed_plans: 9
-  percent: 100
+  completed_phases: 0
+  total_plans: 8
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-16)
+See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Empower users to easily and realistically generate synthetic workout data that seamlessly uploads to Strava without looking fake.
-**Current focus:** Phase 03 — route-interpolator-brain
+**Current focus:** Phase 05 — Activity Type System
 
 ## Status
 
-**Current Phase:** 4
-**Last session:** 2026-04-17T03:13:09.409Z
-**Stopped at:** Phase 04 UI-SPEC approved
+**Current Phase:** 5
+**Last session:** 2026-04-17
+**Stopped at:** Milestone v1.1 requirements and roadmap defined
 
-[█████████░] 86%
+[░░░░░░░░░░] 0%
 
 ## Recent Actions
 
-- 2026-04-17: Completed 03-01 — temporal path distancer with @turf/turf (CFG-04). 5/5 tests GREEN.
-- 2026-04-16: Project initialized. Ready for Phase 1 planning.
+- 2026-04-17: v1.0 MVP complete and tagged. All 13 requirements shipped.
+- 2026-04-17: v1.1 milestone started — 12 requirements, 4 phases, 8 plans.
 
 ## Decisions
 
@@ -42,14 +42,12 @@ See: .planning/PROJECT.md (updated 2026-04-16)
 |-------|----------|
 | 03-01 | Coordinate flip [lat,lon] → [lon,lat] handled inside interpolatePath; mirrors inverse of OSRM flip in store line 98 |
 | 03-01 | gaussianRandom uses Box-Muller transform and is not exported — pure internal utility |
-| 03-01 | generateActivity stores ActivityPoint[] with 0-valued biometrics as explicit stubs — Plan 02 replaces body |
-
-- [Phase 03]: paceToKarvonenFraction boundary fix: <=330 for Z3 so 5:30/km maps correctly to 0.75 HRR fraction
-- [Phase 03]: Elevation API errors fall back to 0m array (inner catch) — pipeline never fails due to elevation API outage
+| 03-02 | Karvonen zone fix: paceSecPerKm <=330 for Z3 so 5:30/km maps correctly to 0.75 HRR fraction |
+| 03-02 | Elevation API errors fall back to 0m array (inner catch) — pipeline never fails due to elevation API outage |
 
 ## Performance Metrics
 
 | Phase | Plan | Duration | Tasks | Files |
 |-------|------|----------|-------|-------|
 | 03 | 01 | 15 min | 3 | 9 |
-| Phase 03 P02 | 3 | 3 tasks | 4 files |
+| 03 | 02 | - | 3 | 4 |
