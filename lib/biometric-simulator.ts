@@ -41,7 +41,8 @@ export function computeHR(params: {
   const baseHR = restHR + (steadyHR - restHR) * warmupFactor;
 
   // Cardiac drift: creeps ~5 bpm over the full run duration [ASSUMED]
-  const drift = (elapsedSeconds / totalSeconds) * 5;
+  // Guard against totalSeconds === 0 (single-point route) to prevent NaN
+  const drift = totalSeconds > 0 ? (elapsedSeconds / totalSeconds) * 5 : 0;
 
   const raw = baseHR + drift;
   return Math.round(params.addNoise ? gaussianRandom(raw, 3) : raw);
