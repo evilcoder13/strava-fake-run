@@ -7,9 +7,9 @@
 
 ### Map Navigation & Utilities
 
-- [ ] **NAV-01**: User can type an address or city name into a search bar to instantly center the map on that location
-- [ ] **NAV-02**: User can click a "Locate Me" button to zoom the map to their current physical GPS coordinates
-- [ ] **NAV-03**: Search functionality provides autocomplete or suggestions via a free geocoding service (e.g. Nominatim)
+- [x] **NAV-01**: User can type an address or city name into a search bar to instantly center the map on that location
+- [x] **NAV-02**: User can click a "Locate Me" button to zoom the map to their current physical GPS coordinates
+- [x] **NAV-03**: Search functionality provides autocomplete or suggestions via a free geocoding service (e.g. Nominatim)
 
 ### Sharing & Persistence
 
@@ -21,9 +21,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| NAV-01 | Phase 9 | Pending |
-| NAV-02 | Phase 9 | Pending |
-| NAV-03 | Phase 9 | Pending |
+| NAV-01 | Phase 9 | Complete |
+| NAV-02 | Phase 9 | Complete |
+| NAV-03 | Phase 9 | Complete |
 | SHR-01 | Phase 10 | Pending |
 | SHR-02 | Phase 10 | Pending |
 | SHR-03 | Phase 11 | Pending |

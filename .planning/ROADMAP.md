@@ -30,7 +30,7 @@
 
 ### 🚧 v1.2 Map Utilities & Sharing (In Progress)
 
-- [ ] **Phase 9: Map Navigation Utilities** — Address search and geolocation
+- [x] **Phase 9: Map Navigation Utilities** — Address search and geolocation
 - [ ] **Phase 10: URL State Sharing** — Share routes via base64 URL params
 - [ ] **Phase 11: Direct Strava Upload** — OAuth integration (Targeted)
 
@@ -45,6 +45,11 @@
   2. "Locate Me" button successfully zooms to user's physical position.
   3. Map is responsive and markers are placed correctly after navigation.
 - **Plans**: 2 plans
+- **Status**: COMPLETE ✓
+
+Plans:
+- [x] 09-01: Store updates & Geolocation button
+- [x] 09-02: Nominatim search implementation
 
 ### Phase 10: URL State Sharing
 - **Goal**: Enable route sharing and persistence via URL params.
@@ -66,6 +71,6 @@
 | 6. Configuration UX | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 7. Enhanced Simulation | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 8. Data Preview Charts | v1.1 | 2/2 | Complete | 2026-04-17 |
-| 9. Map Navigation Utilities | v1.2 | 0/2 | Not started | - |
+| 9. Map Navigation Utilities | v1.2 | 2/2 | Complete | 2026-04-17 |
 | 10. URL State Sharing | v1.2 | 0/2 | Not started | - |
 | 11. Direct Strava Upload | v1.2 | 0/1 | Not started | - |

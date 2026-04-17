@@ -38,12 +38,11 @@ Empower users to easily and realistically generate synthetic workout data that s
 - ✓ Pace/Speed unit toggle — v1.1
 - ✓ Gradient-responsive cadence & HR — v1.1
 - ✓ GPS noise & biometric ramps — v1.1
-- ✓ Live Pace & HR charts — v1.1
+- ✓ ✓ Live Pace & HR charts — v1.1
+- ✓ Address search bar & Geolocation button — v1.2 (Phase 9)
 
 ### Active
 
-- [ ] Address search bar (Nominatim integration)
-- [ ] Geolocation "Fly to Me" button
 - [ ] URL-based route persistence (Shareable links)
 - [ ] Direct Strava Upload (v1.2 goal)
 
@@ -56,7 +55,7 @@ Empower users to easily and realistically generate synthetic workout data that s
 ## Context
 
 - **Environment**: Next.js / React with Tailwind CSS, Zustand state, xmlbuilder2 exports.
-- **Codebase state (v1.0)**: ~1,200 LOC TypeScript/TSX. Core libs: `lib/route-interpolator.ts`, `lib/biometric-simulator.ts`, `lib/elevation-simulator.ts`, `lib/export/gpx.ts`, `lib/export/tcx.ts`.
+- **Codebase state**: ~2,000 LOC TypeScript/TSX. Expanded with Recharts, Nominatim integration, and advanced biometric models. Core libs: `lib/route-interpolator.ts`, `lib/biometric-simulator.ts`, `lib/elevation-simulator.ts`, `lib/export/gpx.ts`, `lib/export/tcx.ts`.
 - **Data contract**: `ActivityPoint` in `lib/types/activity.ts` — lat, lon, elevation, timestamp, heartRate, cadence, distFromStartKm.
 - **Domain**: Fitness tracking data structures (GPX/TCX schemas) and geospatial analysis.
 
@@ -75,6 +74,7 @@ Empower users to easily and realistically generate synthetic workout data that s
 | xmlbuilder2 for XML | Structural safety over manual string concatenation. | ✓ Good |
 | OSRM snap-to-road | Free, fast, no API key needed. | ✓ Good |
 | Open-Meteo elevation | Free, accurate, batch-capable. | ✓ Good |
+| Nominatim Search | Free, key-less address geocoding. | ✓ Good |
 
 ## Evolution
 
@@ -94,4 +94,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-17 after v1.0 milestone — starting v1.1*
+*Last updated: 2026-04-17 after Phase 9 completion — progressing in v1.2*
