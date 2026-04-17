@@ -52,7 +52,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Install @turf/turf + vitest, define ActivityPoint contract, implement lib/route-interpolator.ts, extend Zustand store with generateActivity stub
+- [x] 03-01-PLAN.md — Install @turf/turf + vitest, define ActivityPoint contract, implement lib/route-interpolator.ts, extend Zustand store with generateActivity stub
 - [ ] 03-02-PLAN.md — Implement lib/biometric-simulator.ts and lib/elevation-simulator.ts, wire full generateActivity pipeline, add Generate Activity button to Sidebar
 
 ### Phase 4: Export Engine
@@ -77,5 +77,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Project Setup & Core Map | 0/3 | Not started | - |
 | 2. UI Controls & Road Snapping | 2/2 | Complete    | 2026-04-16 |
-| 3. Route Interpolator Brain | 0/2 | Planned | - |
+| 3. Route Interpolator Brain | 1/2 | In Progress|  |
 | 4. Export Engine | 0/2 | Not started | - |

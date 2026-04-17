@@ -17,7 +17,7 @@
 - [ ] **CFG-01**: User can specify exact date and start time for the activity
 - [ ] **CFG-02**: User can input target average pace (e.g., min/km)
 - [ ] **CFG-03**: User can toggle pacing variability/noise to prevent robotic flatlining
-- [ ] **CFG-04**: Application calculates segmented distances and interpolates timestamps based on target pace
+- [x] **CFG-04**: Application calculates segmented distances and interpolates timestamps based on target pace
 
 ### Biometric Simulation
 
@@ -56,7 +56,7 @@
 | CFG-01 | Phase 2 | Pending |
 | CFG-02 | Phase 2 | Pending |
 | CFG-03 | Phase 2 | Pending |
-| CFG-04 | Phase 3 | Pending |
+| CFG-04 | Phase 3 | Complete |
 | BIO-01 | Phase 3 | Pending |
 | BIO-02 | Phase 3 | Pending |
 | BIO-03 | Phase 3 | Pending |
