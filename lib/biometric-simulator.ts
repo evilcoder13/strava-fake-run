@@ -2,6 +2,8 @@
 // Karvonen HR model with exponential warmup and linear pace-to-cadence.
 // Defaults for restHR/maxHR are labeled [ASSUMED] — reasonable recreational runner baseline.
 
+import type { SportProfile } from './types/activity';
+
 // Box-Muller transform — private noise utility
 function gaussianRandom(mean: number, stdDev: number): number {
   let u1: number, u2: number;
@@ -27,13 +29,18 @@ export function computeHR(params: {
   restHR?: number;    // [ASSUMED default: 65 bpm — typical recreational runner]
   maxHR?: number;     // [ASSUMED default: 185 bpm — 220 - 35yr age formula]
   addNoise?: boolean;
+  profile?: SportProfile;   // When provided, overrides paceToKarvonenFraction with profile.hrr
 }): number {
   const { elapsedSeconds, totalSeconds, paceSecPerKm } = params;
   const restHR = params.restHR ?? 65;
   const maxHR = params.maxHR ?? 185;
 
   const hrr = maxHR - restHR;                           // Heart rate reserve
-  const fraction = paceToKarvonenFraction(paceSecPerKm);
+  // When a sport profile is provided, use its HRR midpoint as the intensity fraction.
+  // This ensures Walking never feels like Running regardless of pace input.
+  const fraction = params.profile
+    ? (params.profile.hrr.min + params.profile.hrr.max) / 2
+    : paceToKarvonenFraction(paceSecPerKm);
   const steadyHR = restHR + fraction * hrr;
 
   // Exponential warmup: tau=120s [ASSUMED — typical recreational runner warmup rate]
@@ -51,7 +58,16 @@ export function computeHR(params: {
 export function computeCadence(params: {
   paceSecPerKm: number;
   addNoise?: boolean;
+  profile?: SportProfile;   // When provided, cadence drawn from profile.cadence range
 }): number {
+  // When a sport profile is provided, use its cadence range (midpoint + noise)
+  if (params.profile) {
+    const { min, max } = params.profile.cadence;
+    const mid = (min + max) / 2;
+    return Math.round(params.addNoise ? gaussianRandom(mid, (max - min) / 6) : mid);
+  }
+
+  // Legacy running-only linear model (kept for backwards compatibility)
   // Linear model: 4:00/km (240s) → 180 spm; 7:00/km (420s) → 158 spm [ASSUMED — published range]
   const pace4Min = 240;
   const pace7Min = 420;

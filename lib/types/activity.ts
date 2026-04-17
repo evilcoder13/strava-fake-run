@@ -28,3 +28,31 @@ export interface InterpolateOptions {
   useNoise: boolean;
   intervalSeconds?: number;         // Default: 10 seconds
 }
+
+// Activity type enum (v1.1)
+export enum ActivityType {
+  Running = 'Running',
+  Walking = 'Walking',
+  Cycling = 'Cycling',
+  Hiking  = 'Hiking',
+}
+
+// Per-sport biometric profile
+export interface SportProfile {
+  activityType: ActivityType;
+  gpxType: string;        // value for GPX <type> element — lowercase
+  tcxSport: string;       // value for TCX Sport= attribute — Strava convention
+  hrr: {
+    min: number;          // minimum Karvonen HRR fraction
+    max: number;          // maximum Karvonen HRR fraction
+  };
+  cadence: {
+    min: number;          // minimum cadence in native unit
+    max: number;          // maximum cadence in native unit
+    unit: 'SPM' | 'RPM';  // Steps Per Minute or Revolutions Per Minute
+  };
+  pace: {
+    slowSec: number;      // slowest reasonable pace in sec/km equivalent
+    fastSec: number;      // fastest reasonable pace in sec/km equivalent
+  };
+}

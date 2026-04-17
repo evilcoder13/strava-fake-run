@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 import type { ActivityPoint } from '@/lib/types/activity';
+import { ActivityType } from '@/lib/types/activity';
 import { interpolatePath } from '@/lib/route-interpolator';
 import { computeHR, computeCadence } from '@/lib/biometric-simulator';
 import { fetchElevations } from '@/lib/elevation-simulator';
+import { SPORT_PROFILES } from '@/lib/sport-profiles';
 
 export interface Waypoint {
   id: string;
@@ -13,7 +15,7 @@ export interface Waypoint {
 // Data-only fields that callers are allowed to update via setConfig.
 // Restricting to Pick prevents accidental overwrite of store action functions.
 type RouteConfig = Pick<RouteState,
-  'startDate' | 'startTime' | 'paceMinutes' | 'paceSeconds' | 'useNoise'
+  'startDate' | 'startTime' | 'paceMinutes' | 'paceSeconds' | 'useNoise' | 'activityType'
 >;
 
 interface RouteState {
@@ -24,6 +26,8 @@ interface RouteState {
   paceMinutes: number;
   paceSeconds: number;
   useNoise: boolean;
+  activityType: ActivityType;
+  setActivityType: (type: ActivityType) => void;
   addWaypoint: (lat: number, lng: number) => void;
   removeWaypoint: (id: string) => void;
   reorderWaypoints: (oldIndex: number, newIndex: number) => void;
@@ -43,6 +47,7 @@ export const useRouteStore = create<RouteState>((set) => ({
   paceMinutes: 5,
   paceSeconds: 30,
   useNoise: false,
+  activityType: ActivityType.Running,
   generatedActivity: null,
   isGenerating: false,
 
@@ -84,6 +89,10 @@ export const useRouteStore = create<RouteState>((set) => ({
     set(config);
   },
 
+  setActivityType: (type: ActivityType) => {
+    set({ activityType: type });
+  },
+
   generateActivity: async () => {
     const state = useRouteStore.getState();
     if (state.snappedPath.length < 2) return;
@@ -115,9 +124,10 @@ export const useRouteStore = create<RouteState>((set) => ({
         elevations = new Array(points.length).fill(0);
       }
 
-      // Step 3: HR + Cadence (BIO-01, BIO-02)
+      // Step 3: HR + Cadence (BIO-01, BIO-02) — sport-profile-aware (v1.1)
       const paceSecPerKm = state.paceMinutes * 60 + state.paceSeconds;
       const totalSeconds = points[points.length - 1].elapsedSeconds;
+      const sportProfile = SPORT_PROFILES[state.activityType];
 
       const activity: ActivityPoint[] = points.map((p, i) => ({
         lat: p.lat,
@@ -129,10 +139,12 @@ export const useRouteStore = create<RouteState>((set) => ({
           totalSeconds,
           paceSecPerKm,
           addNoise: state.useNoise,
+          profile: sportProfile,
         }),
         cadence: computeCadence({
           paceSecPerKm,
           addNoise: state.useNoise,
+          profile: sportProfile,
         }),
         elevation: elevations[i] ?? 0,
       }));
