@@ -20,7 +20,7 @@
 ### 🚧 v1.1 Realism & Activity Types (In Progress)
 
 - [x] **Phase 5: Activity Type System** — Sport selector with per-type biometric profiles and Strava sport encoding
-- [ ] **Phase 6: Configuration UX** — Timezone picker and pace unit toggle
+- [x] **Phase 6: Configuration UX** — Timezone picker and pace unit toggle
 - [ ] **Phase 7: Enhanced Simulation** — Gradient-responsive cadence/HR, GPS noise, warm-up/cool-down curves
 - [ ] **Phase 8: Data Preview Charts** — Pace and HR charts rendered before export
 
@@ -95,6 +95,6 @@ Plans:
 | 3. Route Interpolator Brain | v1.0 | 2/2 | Complete | 2026-04-17 |
 | 4. Export Engine | v1.0 | 2/2 | Complete | 2026-04-17 |
 | 5. Activity Type System | v1.1 | 2/2 | Complete | 2026-04-17 |
-| 6. Configuration UX | v1.1 | 2/2 | Not started | - |
+| 6. Configuration UX | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 7. Enhanced Simulation | v1.1 | 0/2 | Not started | - |
 | 8. Data Preview Charts | v1.1 | 0/2 | Not started | - |
