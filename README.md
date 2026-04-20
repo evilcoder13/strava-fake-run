@@ -1,5 +1,7 @@
 # StravaFakeRun 🏃‍♂️🚴‍♂️
 
+**Live Demo: [https://stravafakerun.duckdns.org](https://stravafakerun.duckdns.org)**
+
 **StravaFakeRun** is a premium, privacy-first web utility designed to help athletes and developers generate realistic synthetic workout data. Whether you need to simulate a route for testing, restore a lost activity, or experiment with biometric models, StravaFakeRun provides the tools to create "human-feeling" GPX and TCX files that look authentic on platforms like Strava.
 
 ## ✨ Features
