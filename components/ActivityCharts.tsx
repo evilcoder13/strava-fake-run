@@ -18,7 +18,15 @@ interface ChartsProps {
   data: ActivityPoint[];
 }
 
-const CustomTooltip = ({ active, payload, label, unit }: any) => {
+// Recharts Tooltip props type is complex, using record/unknown for now to satisfy ESLint without any
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{ name: string; value: number }>;
+  label?: string;
+  unit: string;
+}
+
+const CustomTooltip = ({ active, payload, label, unit }: TooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-2 border rounded shadow-sm text-xs">

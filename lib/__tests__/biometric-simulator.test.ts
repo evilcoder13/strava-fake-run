@@ -44,8 +44,6 @@ describe('computeCadence', () => {
 
   it('reduces cadence on steep climbs (SIM-01)', () => {
     // Only profile-based cadence currently implements SIM-01
-    const { ActivityType } = require('../types/activity');
-    const { SPORT_PROFILES } = require('../sport-profiles');
     const profile = SPORT_PROFILES[ActivityType.Running];
     
     const flatCadence = computeCadence({ paceSecPerKm: 330, profile, gradient: 0 });

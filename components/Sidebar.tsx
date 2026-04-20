@@ -2,7 +2,7 @@
 
 import { useRouteStore } from "@/store/useRouteStore";
 import dynamic from "next/dynamic";
-import { Trash2, GripVertical, Footprints, PersonStanding, Bike, Mountain, ChevronDown, ChevronUp, Search, Navigation, Share2 } from "lucide-react";
+import { Trash2, GripVertical, Footprints, PersonStanding, Bike, Mountain, Search, Navigation, Share2 } from "lucide-react";
 import { useState } from "react";
 
 const ActivityCharts = dynamic(() => import("./ActivityCharts"), { ssr: false });
@@ -117,7 +117,7 @@ export default function Sidebar() {
   );
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
+  const [, setIsSearching] = useState(false);
   const flyTo = useRouteStore((state) => state.flyTo);
 
   const handleSearch = async (e: React.FormEvent) => {

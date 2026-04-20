@@ -70,7 +70,32 @@ export function exportTCX(points: ActivityPoint[], activityType: ActivityType = 
 
   const xmlString = root.end({ prettyPrint: true });
   
-  // Trigger download
+  // Handle Tauri (Desktop) Save
+  const isTauri = typeof window !== 'undefined' && (window as Window & { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__;
+  
+  if (isTauri) {
+    (async () => {
+      try {
+        const { save } = await import('@tauri-apps/plugin-dialog');
+        const { writeTextFile } = await import('@tauri-apps/plugin-fs');
+        
+        const path = await save({
+          defaultPath: `fake-${profile.gpxType}.tcx`,
+          filters: [{ name: 'TCX', extensions: ['tcx'] }]
+        });
+        
+        if (path) {
+          await writeTextFile(path, xmlString);
+          console.log('TCX saved to:', path);
+        }
+      } catch (err) {
+        console.error('Failed to save TCX via Tauri:', err);
+      }
+    })();
+    return;
+  }
+
+  // Trigger browser download fallback
   const blob = new Blob([xmlString], { type: 'application/vnd.garmin.tcx+xml' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');

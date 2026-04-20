@@ -1,4 +1,5 @@
 import { RouteState } from "@/store/useRouteStore";
+import { ActivityType } from "./types/activity";
 
 interface SerializedState {
   w: [number, number][]; // waypoints (lat, lng)
@@ -13,21 +14,19 @@ interface SerializedState {
 }
 
 export function encodeState(state: RouteState): string {
-  const data: SerializedState = {
-    w: state.waypoints.map((w) => [w.lat, w.lng]),
-    a: state.activityType,
-    sd: state.startDate,
-    st: state.startTime,
-    tz: state.timezoneOffset,
-    pm: state.paceMinutes,
-    ps: state.paceSeconds,
-    n: state.useNoise,
-    u: state.useSpeedUnit,
-  };
-
   try {
+    const data: SerializedState = {
+      w: state.waypoints.map((w) => [w.lat, w.lng]),
+      a: state.activityType,
+      sd: state.startDate,
+      st: state.startTime,
+      tz: state.timezoneOffset,
+      pm: state.paceMinutes,
+      ps: state.paceSeconds,
+      n: state.useNoise,
+      u: state.useSpeedUnit,
+    };
     const json = JSON.stringify(data);
-    // Use btoa safely for unicode
     const utf8Bytes = new TextEncoder().encode(json);
     let binary = "";
     utf8Bytes.forEach(b => binary += String.fromCharCode(b));
@@ -56,7 +55,7 @@ export function decodeState(base64: string): Partial<RouteState> | null {
         lat: coords[0],
         lng: coords[1],
       })),
-      activityType: data.a as any,
+      activityType: data.a as ActivityType,
       startDate: data.sd,
       startTime: data.st,
       timezoneOffset: data.tz,

@@ -48,7 +48,32 @@ export function exportGPX(points: ActivityPoint[], activityType: ActivityType = 
 
   const xmlString = root.end({ prettyPrint: true });
   
-  // Trigger download
+  // Handle Tauri (Desktop) Save
+  const isTauri = typeof window !== 'undefined' && (window as Window & { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__;
+  
+  if (isTauri) {
+    (async () => {
+      try {
+        const { save } = await import('@tauri-apps/plugin-dialog');
+        const { writeTextFile } = await import('@tauri-apps/plugin-fs');
+        
+        const path = await save({
+          defaultPath: `fake-${profile.gpxType}.gpx`,
+          filters: [{ name: 'GPX', extensions: ['gpx'] }]
+        });
+        
+        if (path) {
+          await writeTextFile(path, xmlString);
+          console.log('GPX saved to:', path);
+        }
+      } catch (err) {
+        console.error('Failed to save GPX via Tauri:', err);
+      }
+    })();
+    return;
+  }
+
+  // Trigger browser download fallback
   const blob = new Blob([xmlString], { type: 'application/gpx+xml' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
