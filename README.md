@@ -42,6 +42,22 @@
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### Docker
+
+You can also run StravaFakeRun using Docker for a consistent environment:
+
+1. Build the image:
+   ```bash
+   docker build -t stravafakerun .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -p 3000:3000 stravafakerun
+   ```
+
+3. Access the app at [http://localhost:3000](http://localhost:3000).
+
 ## 🛠️ Built With
 
 - **[Next.js](https://nextjs.org/)** - Fast, React-based web framework.
